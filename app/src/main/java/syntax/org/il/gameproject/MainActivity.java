@@ -126,10 +126,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
-            //Do see the text//
-            //Do see thhe text - amit//
 
-            //Test
 
 
 
