@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect();
     Rect ballRect = new Rect() , platformRectR = new Rect(), platformRectL = new Rect();
     GameView gameView;
-    Rect gameViewRect = new Rect();
+    Rect blockRect = new Rect();
+    Rect block = new Rect();
+
 
 
     @Override
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             leftBorder.getHitRect( leftBorderRect);
             rightBorder.getHitRect(rightBorderRect);
             topBorder.getHitRect(topBorderRect);
-            gameView.getHitRect(gameViewRect);
+          //  block.getHitRect(blockRect);
 
 
             ball.setX(ball.getX() + ballMovementX);
@@ -119,10 +121,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 ball.setY(ball.getY() + 50);
             }
 
-          /*  else if(Rect.intersects(ballRect , gameViewRect)){
+            else if(Rect.intersects(ballRect , block)){
                 ballMovementY = -1 * ballMovementY;
-                //ball.setY(ball.getY() - 20);
-            }*/
+                ball.setY(ball.getY() + 20);
+            }
 
 
 
@@ -190,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
        // GameView gameView;
         gameView = findViewById(R.id.game_view);
-        gameView.sendParams(0 ,100 , 100 , 200);
+        block =  gameView.sendParams( 300,100 , 600 , 200);
 
 
 
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
-        gameViewRect.set(gameView.getLeft(),gameView.getTop(),gameView.getRight(),gameView.getBottom());
+        blockRect.set(block.left,block.top,block.right,block.bottom);
         leftBorderRect.set(leftBorder.getLeft() ,leftBorder.getTop() , leftBorder.getRight() , leftBorder.getBottom());
         rightBorderRect.set(rightBorder.getLeft() , rightBorder.getTop() , rightBorder.getRight() , rightBorder.getBottom());
         topBorderRect.set(topBorder.getLeft(), topBorder.getTop(),topBorder.getRight(),topBorder.getBottom());

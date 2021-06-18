@@ -2,11 +2,17 @@ package syntax.org.il.gameproject;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PictureDrawable;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
@@ -20,6 +26,12 @@ public class GameView extends TextView {
 
     float StartX ,startY , endX , endY;
 Paint paint;
+Rect gameRect = new Rect();
+
+Bitmap platform;
+    private Resources res;
+    Matrix matrix;
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -31,14 +43,19 @@ Paint paint;
     @Override
     protected void onDraw(Canvas canvas ) {
         super.onDraw(canvas);
-        canvas.drawLine(StartX,startY,endX ,endY,paint);
+        canvas.drawRect(gameRect,paint);
     }
 
-    void sendParams(float sx, float sy , float ex , float ey){
-        StartX = sx;
+    Rect sendParams(int sx, int sy , int ex , int ey){
+       /* StartX = sx;
         startY = sy;
         endX = ex;
-        endY = ey;
+        endY = ey;*/
+
+        gameRect.set(sx,sy,ex,ey);
+        invalidate();
+        return gameRect;
+
     }
 }
 
