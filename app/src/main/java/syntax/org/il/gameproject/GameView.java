@@ -27,11 +27,10 @@ public class GameView extends TextView {
     float StartX ,startY , endX , endY;
 Paint paint;
 Rect gameRect = new Rect();
-Rect deleteRect = new Rect();
-Paint transperet = new Paint();
-boolean toDelete = false;
 
-
+Bitmap platform;
+    private Resources res;
+    Matrix matrix;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,19 +38,12 @@ boolean toDelete = false;
         paint.setColor(Color.RED);
         paint.setStrokeWidth(30);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        transperet.setColor(Color.TRANSPARENT);
     }
 
     @Override
     protected void onDraw(Canvas canvas ) {
         super.onDraw(canvas);
-        if(!toDelete) {
-            canvas.drawRect(gameRect, paint);
-        }
-        if(toDelete){
-            canvas.drawRect(deleteRect,transperet);
-            toDelete = false;
-        }
+        canvas.drawRect(gameRect,paint);
     }
 
     Rect sendParams(int sx, int sy , int ex , int ey){
@@ -64,12 +56,6 @@ boolean toDelete = false;
         invalidate();
         return gameRect;
 
-    }
-
-    void delete(Rect rect){
-        toDelete = true;
-        deleteRect = rect;
-        invalidate();
     }
 }
 
