@@ -45,12 +45,12 @@ import java.sql.Time;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
+
+    //Variables declaration
     ImageView platform , ball;
     View leftBorder,rightBorder, topBorder;
-
     float newX ,speed = 1;
     float ballX , ballY,ballZ;
-
     SensorManager sensorManger;
     private Sensor sensorAccel , sensorGyro;
     float left;
@@ -63,6 +63,46 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Rect block = new Rect();
 
 
+
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        platform = findViewById(R.id.platform_iv);
+        leftBorder = findViewById(R.id.left_border_tv);
+        rightBorder = findViewById(R.id.right_border_tv);
+        topBorder = findViewById(R.id.top_border_tv);
+        ball = findViewById(R.id.ball_iv);
+
+       // GameView gameView;
+        gameView = findViewById(R.id.game_view);
+        block =  gameView.sendParams( 600,600 , 800 , 700);
+
+
+        blockRect.set(block.left,block.top,block.right,block.bottom);
+        leftBorderRect.set(leftBorder.getLeft() ,leftBorder.getTop() , leftBorder.getRight() , leftBorder.getBottom());
+        rightBorderRect.set(rightBorder.getLeft() , rightBorder.getTop() , rightBorder.getRight() , rightBorder.getBottom());
+        topBorderRect.set(topBorder.getLeft(), topBorder.getTop(),topBorder.getRight(),topBorder.getBottom());
+
+        platformRectR.set(platform.getLeft()/2 , platform.getTop() , platform.getRight(),platform.getBottom());
+        ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
+
+
+
+
+
+        sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorAccel = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorGyro = sensorManger.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -86,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             leftBorder.getHitRect( leftBorderRect);
             rightBorder.getHitRect(rightBorderRect);
             topBorder.getHitRect(topBorderRect);
-          //  block.getHitRect(blockRect);
+            //  block.getHitRect(blockRect);
 
 
             ball.setX(ball.getX() + ballMovementX);
@@ -122,20 +162,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
             else if(Rect.intersects(ballRect , block)){
+
+                gameView.delete(block);
+                block.set(0,0,0,0);
                 ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() + 20);
+
+               // ball.setY(ball.getY() + 20);
             }
-
-
-
-
-
-
-
-
-
-
-
 
             //platform movement
             float platformX = platform.getX();
@@ -152,10 +185,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         }
-
-
-
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -177,72 +208,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-
-        platform = findViewById(R.id.platform_iv);
-        leftBorder = findViewById(R.id.left_border_tv);
-        rightBorder = findViewById(R.id.right_border_tv);
-        topBorder = findViewById(R.id.top_border_tv);
-        ball = findViewById(R.id.ball_iv);
-
-       // GameView gameView;
-        gameView = findViewById(R.id.game_view);
-        block =  gameView.sendParams( 300,100 , 600 , 200);
-
-
-
-
-
-
-
-        blockRect.set(block.left,block.top,block.right,block.bottom);
-        leftBorderRect.set(leftBorder.getLeft() ,leftBorder.getTop() , leftBorder.getRight() , leftBorder.getBottom());
-        rightBorderRect.set(rightBorder.getLeft() , rightBorder.getTop() , rightBorder.getRight() , rightBorder.getBottom());
-        topBorderRect.set(topBorder.getLeft(), topBorder.getTop(),topBorder.getRight(),topBorder.getBottom());
-
-        platformRectR.set(platform.getLeft()/2 , platform.getTop() , platform.getRight(),platform.getBottom());
-        ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
-
-
-
-
-
-        sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensorAccel = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorGyro = sensorManger.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-
-    }
-
-
-
-
-
-   /* @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        float currX = 0;
-
-        switch(event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                currX = platform.getX();
-               //currY = platform.getY();
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                float newX = event.getX() + currX;
-                //float newY = event.getY() + currY;
-                platform.setX(newX);
-               // platform.setY(newY);
-                return true;
-        }
-
-
-
-        return super.onTouchEvent(event);
-    }*/
 }
