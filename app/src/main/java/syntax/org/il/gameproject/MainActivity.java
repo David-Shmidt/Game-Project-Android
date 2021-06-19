@@ -216,9 +216,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorAccel = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorGyro = sensorManger.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
+
     }
-
-
 
 
 

@@ -22,15 +22,17 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 
-public class GameView extends TextView {
+public class GameView extends androidx.appcompat.widget.AppCompatTextView {
 
-    float StartX ,startY , endX , endY;
+    float startX ,startY , endX , endY;
 Paint paint;
 Rect gameRect = new Rect();
 
 Bitmap platform;
     private Resources res;
     Matrix matrix;
+
+
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -45,9 +47,10 @@ Bitmap platform;
         super.onDraw(canvas);
         canvas.drawRect(gameRect,paint);
     }
+    
 
     Rect sendParams(int sx, int sy , int ex , int ey){
-       /* StartX = sx;
+       /* startX = sx;
         startY = sy;
         endX = ex;
         endY = ey;*/
@@ -57,5 +60,6 @@ Bitmap platform;
         return gameRect;
 
     }
+
 }
 
