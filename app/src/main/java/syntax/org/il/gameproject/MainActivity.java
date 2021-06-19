@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
             else if(Rect.intersects(ballRect , block)){
+                gameView.delete(block);
+                block.set(0,0,0,0);
                 ballMovementY = -1 * ballMovementY;
                 ball.setY(ball.getY() + 20);
             }
