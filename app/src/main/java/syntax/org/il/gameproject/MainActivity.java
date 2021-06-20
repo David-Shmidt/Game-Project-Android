@@ -64,120 +64,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
 
-
-
-
-        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
-
-            platformRectR.set(platform.getWidth()/2 , platform.getTop() , platform.getRight(),platform.getBottom());
-            platformRectL.set(platform.getLeft(), platform.getTop(),platform.getWidth()/2,platform.getBottom());
-            ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
-
-
-            newX = 5 * event.values[0];
-
-            ball.getHitRect(ballRect);
-            platform.getHitRect(platformRectR);
-            platform.getHitRect(platformRectL);
-            leftBorder.getHitRect( leftBorderRect);
-            rightBorder.getHitRect(rightBorderRect);
-            topBorder.getHitRect(topBorderRect);
-          //  block.getHitRect(blockRect);
-
-
-            ball.setX(ball.getX() + ballMovementX);
-            ball.setY(ball.getY() + ballMovementY);
-
-
-
-            //ball movement
-            if(Rect.intersects(ballRect , rightBorderRect)){
-
-                ballMovementX = -ballMovementX;
-                ball.setX(ball.getX() - 50);
-                //ball.setY(ball.getY() - 50);
-
-            }
-
-            else if( Rect.intersects(ballRect,leftBorderRect)){
-                ballMovementX = -ballMovementX;
-                ball.setX(ball.getX() + 50);
-            }
-            else if(Rect.intersects(platformRectR,ballRect)){
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() - 50);
-            }
-            else if(Rect.intersects(platformRectL,ballRect)){
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() - 50);
-            }
-
-            else if(Rect.intersects(ballRect, topBorderRect)){
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() + 50);
-            }
-
-            else if(Rect.intersects(ballRect , block)){
-                gameView.delete(block);
-                block.set(0,0,0,0);
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() + 20);
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-            //platform movement
-            float platformX = platform.getX();
-
-
-            if( (Rect.intersects(platformRectL,leftBorderRect)) && newX > 0)
-                platform.setX( platformX);
-            else if(Rect.intersects(platformRectR,rightBorderRect) && newX < 0){
-                platform.setX( platformX);
-            }
-
-            else
-                platform.setX( platformX - newX);
-
-
-        }
-
-
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sensorManger.unregisterListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(sensorAccel != null){
-            sensorManger.registerListener(this , sensorAccel , SensorManager.SENSOR_DELAY_GAME);
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -220,31 +107,106 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
 
 
 
 
-   /* @Override
-    public boolean onTouchEvent(MotionEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-        float currX = 0;
 
-        switch(event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                currX = platform.getX();
-               //currY = platform.getY();
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                float newX = event.getX() + currX;
-                //float newY = event.getY() + currY;
-                platform.setX(newX);
-               // platform.setY(newY);
-                return true;
+            platformRectR.set(platform.getWidth()/2 , platform.getTop() , platform.getRight(),platform.getBottom());
+            platformRectL.set(platform.getLeft(), platform.getTop(),platform.getWidth()/2,platform.getBottom());
+            ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
+
+
+            newX = 5 * event.values[0];
+
+            ball.getHitRect(ballRect);
+            platform.getHitRect(platformRectR);
+            platform.getHitRect(platformRectL);
+            leftBorder.getHitRect( leftBorderRect);
+            rightBorder.getHitRect(rightBorderRect);
+            topBorder.getHitRect(topBorderRect);
+            //  block.getHitRect(blockRect);
+
+
+            ball.setX(ball.getX() + ballMovementX);
+            ball.setY(ball.getY() + ballMovementY);
+
+
+
+            //ball movement
+            if(Rect.intersects(ballRect , rightBorderRect)){
+
+                ballMovementX = -ballMovementX;
+                ball.setX(ball.getX() - 50);
+                //ball.setY(ball.getY() - 50);
+
+            }
+
+            else if( Rect.intersects(ballRect,leftBorderRect)){
+                ballMovementX = -ballMovementX;
+                ball.setX(ball.getX() + 50);
+            }
+            else if(Rect.intersects(platformRectR,ballRect)){
+                ballMovementY = -1 * ballMovementY;
+                ball.setY(ball.getY() - 50);
+            }
+            else if(Rect.intersects(platformRectL,ballRect)){
+                ballMovementY = -1 * ballMovementY;
+                ball.setY(ball.getY() - 50);
+            }
+
+            else if(Rect.intersects(ballRect, topBorderRect)){
+                ballMovementY = -1 * ballMovementY;
+                ball.setY(ball.getY() + 50);
+            }
+
+            else if(Rect.intersects(ballRect , block)){
+                gameView.delete(block);
+                block.set(0,0,0,0);
+                ballMovementY = -1 * ballMovementY;
+                ball.setY(ball.getY() + 20);
+            }
+
+            //platform movement
+            float platformX = platform.getX();
+
+
+            if( (Rect.intersects(platformRectL,leftBorderRect)) && newX > 0)
+                platform.setX( platformX);
+            else if(Rect.intersects(platformRectR,rightBorderRect) && newX < 0){
+                platform.setX( platformX);
+            }
+
+            else
+                platform.setX( platformX - newX);
+
+
         }
 
+    }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-        return super.onTouchEvent(event);
-    }*/
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManger.unregisterListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(sensorAccel != null){
+            sensorManger.registerListener(this , sensorAccel , SensorManager.SENSOR_DELAY_GAME);
+        }
+    }
+
 }
