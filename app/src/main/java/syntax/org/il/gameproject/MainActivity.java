@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
        // GameView gameView;
         gameView = findViewById(R.id.game_view);
         //bricks = new Rect[100];
-        bricks = gameView.createMatrix(10, 10);
+        bricks = gameView.createMatrix(5, 5);
         //block =  gameView.sendParams( 600,600 , 800 , 700);
 
 

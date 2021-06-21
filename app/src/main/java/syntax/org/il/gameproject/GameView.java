@@ -87,8 +87,8 @@ boolean toDeleteF = false;
 
     Rect[] createMatrix(int row , int colum){
         matrix = new Rect[row][colum];
-        Row = 5;
-        Colum = 5;
+        Row = row;
+        Colum = colum;
         bricks = new Rect[Row*Colum];
         for(int i = 0; i<Row;i++){
             heightCahnge += 110;
