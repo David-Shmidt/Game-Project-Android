@@ -19,6 +19,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.AnimatedImageDrawable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -61,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     GameView gameView;
     Rect blockRect = new Rect();
     Rect block = new Rect();
+    Brick[] bricks;
+
+    //temporary ball rectF
+    RectF ballRectF = new RectF();
+
+
 
 
 
@@ -81,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
        // GameView gameView;
         gameView = findViewById(R.id.game_view);
-        block =  gameView.sendParams( 300,100 , 600 , 200);
+        bricks = gameView.createMatrix(10, 10);
+        //block =  gameView.sendParams( 600,600 , 800 , 700);
 
 
 
@@ -101,9 +109,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
+
         sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorGyro = sensorManger.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        //sensorGyro = sensorManger.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
     }
 
@@ -119,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             platformRectR.set(platform.getWidth()/2 , platform.getTop() , platform.getRight(),platform.getBottom());
             platformRectL.set(platform.getLeft(), platform.getTop(),platform.getWidth()/2,platform.getBottom());
             ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
+            ballRectF.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
 
 
             newX = 5 * event.values[0];
@@ -164,12 +174,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 ball.setY(ball.getY() + 50);
             }
 
-            else if(Rect.intersects(ballRect , block)){
+            else {
+                for(Brick brick:bricks){
+                    if(RectF.intersects(ballRectF,brick)){
+                        gameView.deleteF((RectF)brick);
+                        gameView.deleteF(brick);
+                        brick.set(0,0,0,0);
+                    }
+                }
+            }
+
+          /*  else if(Rect.intersects(ballRect , block)){
                 gameView.delete(block);
                 block.set(0,0,0,0);
                 ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() + 20);
-            }
+                if(ballRect.top > block.top){
+                    ball.setY(ball.getY() + 20);
+                }
+                else if(ballRect.top < block.top){
+                    ball.setY(ball.getY() - 20);
+                }
+                else if(ballRect.left < block.left){
+                    ball.setX(ball.getX() + 20);
+                }
+                //ball.setY(ball.getY() - 20);
+            }*/
 
             //platform movement
             float platformX = platform.getX();
@@ -183,8 +212,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             else
                 platform.setX( platformX - newX);
-
-
         }
 
     }
