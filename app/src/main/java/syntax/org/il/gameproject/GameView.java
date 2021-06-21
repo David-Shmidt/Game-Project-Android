@@ -34,6 +34,7 @@ Rect deletRect = new Rect();
 RectF deletRectF  =new RectF();
 boolean toDelete = false;
 boolean toDeleteF = false;
+private Bitmap life[] = new Bitmap[2];
 
     int Row, Colum;
     Rect[][] matrix;
@@ -55,11 +56,18 @@ boolean toDeleteF = false;
         paint.setStyle(Paint.Style.FILL);
         transperent.setColor(Color.TRANSPARENT);
         transperent.setStyle(Paint.Style.FILL);
+
+        //Life
+        //backroundImage = BitmapFactory.decodeResource(getResources(),R.drawable.backround);
+        life[0] = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+        life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.empty_heart);
+
     }
 
     @Override
     protected void onDraw(Canvas canvas ) {
         super.onDraw(canvas);
+
         if(!toDelete){
         //canvas.drawRect(gameRect,paint);
             for(int i = 0; i<Row ; i++){
@@ -75,6 +83,13 @@ boolean toDeleteF = false;
             toDelete = false;
             invalidate();
         }
+        //life
+        canvas.drawBitmap(life[0],580,10,null);
+        canvas.drawBitmap(life[0],640,10,null);
+        canvas.drawBitmap(life[0],700,10,null);
+
+
+
     }
 
 
