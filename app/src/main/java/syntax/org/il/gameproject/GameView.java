@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
@@ -42,6 +43,7 @@ boolean toDeleteF = false;
     int bricksCount = 0;
 
 
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -59,31 +61,20 @@ boolean toDeleteF = false;
         //canvas.drawRect(gameRect,paint);
             for(int i = 0; i<Row ; i++){
                 for(int j=0;j<Colum;j++){
-                    canvas.drawRect(matrix[i][j] , paint);
+                    if(matrix[i][j] != deletRect) {
+                        canvas.drawRect(matrix[i][j], paint);
+                    }
                 }
             }
         }
         if(toDelete){
             canvas.drawRect(deletRect,transperent);
             toDelete = false;
-        }
-        if(toDeleteF){
-            canvas.drawRect(deletRectF,transperent);
-            toDeleteF = false;
+            invalidate();
         }
     }
 
-    Rect sendParams(int sx, int sy , int ex , int ey){
-       /* StartX = sx;
-        startY = sy;
-        endX = ex;
-        endY = ey;*/
 
-        gameRect.set(sx,sy,ex,ey);
-        invalidate();
-        return gameRect;
-
-    }
 
     Rect[] createMatrix(int row , int colum){
         matrix = new Rect[row][colum];
@@ -107,18 +98,23 @@ boolean toDeleteF = false;
         return bricks;
     }
 
-    void delete(Rect rect){
+    void delete(Rect rect , int index){
         toDelete = true;
         deletRect = rect;
         invalidate();
     }
 
-    void deleteF(RectF rectF){
-        toDeleteF = true;
-        deletRectF = rectF;
-        invalidate();
-    }
+    /* Rect sendParams(int sx, int sy , int ex , int ey){
+     *//* StartX = sx;
+        startY = sy;
+        endX = ex;
+        endY = ey;*//*
 
+        gameRect.set(sx,sy,ex,ey);
+        invalidate();
+        return gameRect;
+
+    }*/
 
 }
 

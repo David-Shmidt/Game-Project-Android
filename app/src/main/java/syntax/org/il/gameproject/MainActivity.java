@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //Rect block = new Rect();
     Rect[] bricks;
     Rect brick = new Rect();
+    int indexOfBrick = 0;
 
     //temporary ball rectF
     RectF ballRectF = new RectF();
@@ -179,11 +180,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             else {
                 for(Rect brick:bricks){
+                    indexOfBrick++;
                     if (Rect.intersects(ballRect, brick)) {
                         ballMovementY = -ballMovementY;
                         ball.setY(ball.getY() + 20);
-                        gameView.delete(brick);
+                        gameView.delete(brick ,indexOfBrick );
                         brick.set(0, 0, 0, 0);
+                        indexOfBrick = 0;
                     }
                 }
 
