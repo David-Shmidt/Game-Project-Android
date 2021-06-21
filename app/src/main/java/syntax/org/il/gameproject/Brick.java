@@ -4,7 +4,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.shapes.RectShape;
 
-
+/*
 public class Brick extends RectF {
 
 
@@ -32,9 +32,10 @@ public class Brick extends RectF {
         }
 
 
+
         private int left;
         private int top;
         private int right;
         private int bottom;
-    }
+    }*/
 

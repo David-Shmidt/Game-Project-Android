@@ -60,12 +60,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect();
     Rect ballRect = new Rect() , platformRectR = new Rect(), platformRectL = new Rect();
     GameView gameView;
-    Rect blockRect = new Rect();
-    Rect block = new Rect();
-    Brick[] bricks;
+    //Rect blockRect = new Rect();
+    //Rect block = new Rect();
+    Rect[] bricks;
+    Rect brick = new Rect();
 
     //temporary ball rectF
     RectF ballRectF = new RectF();
+
 
 
 
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
        // GameView gameView;
         gameView = findViewById(R.id.game_view);
+        //bricks = new Rect[100];
         bricks = gameView.createMatrix(10, 10);
         //block =  gameView.sendParams( 600,600 , 800 , 700);
 
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
-        blockRect.set(block.left,block.top,block.right,block.bottom);
+        //blockRect.set(block.left,block.top,block.right,block.bottom);
         leftBorderRect.set(leftBorder.getLeft() ,leftBorder.getTop() , leftBorder.getRight() , leftBorder.getBottom());
         rightBorderRect.set(rightBorder.getLeft() , rightBorder.getTop() , rightBorder.getRight() , rightBorder.getBottom());
         topBorderRect.set(topBorder.getLeft(), topBorder.getTop(),topBorder.getRight(),topBorder.getBottom());
@@ -175,13 +178,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
             else {
-                for(Brick brick:bricks){
-                    if(RectF.intersects(ballRectF,brick)){
-                        gameView.deleteF((RectF)brick);
-                        gameView.deleteF(brick);
-                        brick.set(0,0,0,0);
+                for(Rect brick:bricks){
+                    if (Rect.intersects(ballRect, brick)) {
+                        ballMovementY = -ballMovementY;
+                        ball.setY(ball.getY() + 20);
+                        gameView.delete(brick);
+                        brick.set(0, 0, 0, 0);
                     }
                 }
+
             }
 
           /*  else if(Rect.intersects(ballRect , block)){

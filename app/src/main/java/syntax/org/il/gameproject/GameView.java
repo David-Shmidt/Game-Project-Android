@@ -27,7 +27,7 @@ public class GameView extends TextView {
 
     float StartX ,startY , endX , endY;
 Paint paint;
-Paint transperent = new Paint();
+Paint transperent = new Paint(Paint.ANTI_ALIAS_FLAG);
 Rect gameRect = new Rect();
 Rect deletRect = new Rect();
 RectF deletRectF  =new RectF();
@@ -38,7 +38,7 @@ boolean toDeleteF = false;
     Rect[][] matrix;
     Rect tempRect = new Rect();
     int widthChange = 0 , heightCahnge = 0;
-    Brick[] bricks;
+    Rect[] bricks;
     int bricksCount = 0;
 
 
@@ -48,6 +48,8 @@ boolean toDeleteF = false;
         paint.setColor(Color.RED);
       //  paint.setStrokeWidth(30);
         paint.setStyle(Paint.Style.FILL);
+        transperent.setColor(Color.TRANSPARENT);
+        transperent.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -83,18 +85,20 @@ boolean toDeleteF = false;
 
     }
 
-    Brick[] createMatrix(int row , int colum){
+    Rect[] createMatrix(int row , int colum){
         matrix = new Rect[row][colum];
         Row = 5;
         Colum = 5;
-        bricks = new Brick[Row*Colum];
+        bricks = new Rect[Row*Colum];
         for(int i = 0; i<Row;i++){
             heightCahnge += 110;
             widthChange = 0;
             for(int j = 0; j<Colum; j++){
                 matrix[i][j] = new Rect();
                 matrix[i][j].set(200+widthChange ,100 + heightCahnge ,400 + widthChange, 200 + heightCahnge );
-                bricks[bricksCount] = new Brick(200+widthChange ,100 + heightCahnge ,400 + widthChange, 200 + heightCahnge);
+                bricks[bricksCount] = matrix[i][j];
+                bricksCount++;
+                //bricks[bricksCount] = new Rect(200+widthChange ,100 + heightCahnge ,400 + widthChange, 200 + heightCahnge);
                 //canvas.drawRect(matrix[i][j] , paint);
                 widthChange +=210;
             }
@@ -113,8 +117,6 @@ boolean toDeleteF = false;
         toDeleteF = true;
         deletRectF = rectF;
         invalidate();
-
-
     }
 
 
