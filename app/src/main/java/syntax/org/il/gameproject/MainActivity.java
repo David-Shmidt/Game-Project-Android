@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.collection.ArraySet;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -182,9 +183,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 for(Rect brick:bricks){
                     indexOfBrick++;
                     if (Rect.intersects(ballRect, brick)) {
-                        ballMovementY = -ballMovementY;
-                        ball.setY(ball.getY() + 20);
-                        gameView.delete(brick ,indexOfBrick );
+                        if(ballRect.top > brick.top) {
+                            ballMovementY = -ballMovementY;
+                            ball.setY(ball.getY() - 20);
+                        }
+                       // else if(ballRect.)
+                        gameView.delete(brick ,indexOfBrick);
                         brick.set(0, 0, 0, 0);
                         indexOfBrick = 0;
                     }
