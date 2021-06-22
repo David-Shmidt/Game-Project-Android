@@ -30,14 +30,14 @@
         android:id="@+id/ball_iv"/>
 
     <View
-        android:layout_width="10dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/black"
         android:layout_alignParentLeft="true"
         android:id="@+id/left_border_tv"/>
 
     <View
-        android:layout_width="10dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/black"
         android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="0dp"
         android:background="@color/black"
         android:id="@+id/top_border_tv"/>
 
