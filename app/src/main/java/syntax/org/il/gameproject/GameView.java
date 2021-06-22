@@ -9,12 +9,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
@@ -42,6 +44,7 @@ private Bitmap life[] = new Bitmap[2];
     int widthChange = 0 , heightCahnge = 0;
     Rect[] bricks;
     int bricksCount = 0;
+    Path heart = new Path();
 
 
 
@@ -59,8 +62,8 @@ private Bitmap life[] = new Bitmap[2];
 
         //Life
         //backroundImage = BitmapFactory.decodeResource(getResources(),R.drawable.backround);
-        life[0] = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
-        life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.empty_heart);
+       // life[0] = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+        //life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.empty_heart);
 
     }
 
@@ -83,10 +86,12 @@ private Bitmap life[] = new Bitmap[2];
             toDelete = false;
             invalidate();
         }
+
+        canvas.drawPath(heart , paint);
         //life
-        canvas.drawBitmap(life[0],580,10,null);
-        canvas.drawBitmap(life[0],640,10,null);
-        canvas.drawBitmap(life[0],700,10,null);
+        /*canvas.drawBitmap(life[0],10,10,null);
+        canvas.drawBitmap(life[0],20,10,null);
+        canvas.drawBitmap(life[0],30,10,null);*/
 
 
 

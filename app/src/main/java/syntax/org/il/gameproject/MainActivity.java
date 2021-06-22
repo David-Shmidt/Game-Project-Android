@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor sensorAccel , sensorGyro;
     float left;
     float right;
-    float ballMovementX = 10 , ballMovementY = 10;
+    float ballMovementX = 10 , ballMovementY = 10 , ballSpeed = 2;
     Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect();
     Rect ballRect = new Rect() , platformRectR = new Rect(), platformRectL = new Rect();
     GameView gameView;
@@ -168,10 +168,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             else if(Rect.intersects(platformRectR,ballRect)){
                 ballMovementY = -1 * ballMovementY;
                 ball.setY(ball.getY() - 50);
+                if(ballMovementX < 0) {
+                    ballMovementX = -ballMovementX;
+                    //ball.setX(ball.getX() + 50);
+                }
+
             }
             else if(Rect.intersects(platformRectL,ballRect)){
                 ballMovementY = -1 * ballMovementY;
                 ball.setY(ball.getY() - 50);
+                if(ballMovementX > 0) {
+                    ballMovementX = -ballMovementX;
+                    //ball.setX(ball.getX() - 50);
+                }
+
             }
 
             else if(Rect.intersects(ballRect, topBorderRect)){
