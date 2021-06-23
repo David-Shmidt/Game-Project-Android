@@ -31,6 +31,8 @@ public class GameView extends TextView {
     float StartX ,startY , endX , endY;
     Paint paint;
     Paint transperent = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint heartPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint heartStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
     Rect gameRect = new Rect();
     Rect deletRect = new Rect();
     RectF deletRectF  =new RectF();
@@ -38,6 +40,7 @@ public class GameView extends TextView {
     boolean toDeleteF = false;
 
     int scale = (int)getResources().getDisplayMetrics().density;
+    int lostLives = 0;
 
 
     int Row, Colum;
@@ -47,17 +50,19 @@ public class GameView extends TextView {
     Rect[] bricks;
     int bricksCount = 0;
     Path heart = new Path();
+    Path heart2 = new Path();
+    Path heart3 = new Path();
 
 
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        heartPaint.setColor(Color.RED);
+        heartPaint.setStyle(Paint.Style.FILL);
+        heartStroke.setColor(Color.BLACK);
+        heartStroke.setStyle(Paint.Style.STROKE);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.RED);
         paint.setColor(getResources().getColor(R.color.teal_200));
-        //paint.setColor(getResources().getDrawable(R.drawable.platform));
-        // paint.setColor( Color.rgb(23, 56, 10) );
-        //  paint.setStrokeWidth(30);
         paint.setStyle(Paint.Style.FILL);
         transperent.setColor(Color.TRANSPARENT);
         transperent.setStyle(Paint.Style.FILL);
@@ -73,23 +78,23 @@ public class GameView extends TextView {
         heart.close();
 
 
-        heart.moveTo(75f* scale,5f* scale);
-        heart.lineTo(85f* scale,10f* scale);
-        heart.lineTo(95f* scale,5f* scale);
-        heart.lineTo(105f* scale,10f* scale);
-        heart.lineTo(85f* scale,25f* scale);
-        heart.lineTo(65f* scale,10f* scale);
-        heart.lineTo(75f* scale,5f* scale);
-        heart.close();
+        heart2.moveTo(75f* scale,5f* scale);
+        heart2.lineTo(85f* scale,10f* scale);
+        heart2.lineTo(95f* scale,5f* scale);
+        heart2.lineTo(105f* scale,10f* scale);
+        heart2.lineTo(85f* scale,25f* scale);
+        heart2.lineTo(65f* scale,10f* scale);
+        heart2.lineTo(75f* scale,5f* scale);
+        heart2.close();
 
-        heart.moveTo(125f* scale,5f* scale);
-        heart.lineTo(135f* scale,10f* scale);
-        heart.lineTo(145f* scale,5f* scale);
-        heart.lineTo(155f* scale,10f* scale);
-        heart.lineTo(135f* scale,25f* scale);
-        heart.lineTo(40f* scale,10f* scale);
-        heart.lineTo(125f* scale,5f* scale);
-        heart.close();
+        heart3.moveTo(125f* scale,5f* scale);
+        heart3.lineTo(135f* scale,10f* scale);
+        heart3.lineTo(145f* scale,5f* scale);
+        heart3.lineTo(155f* scale,10f* scale);
+        heart3.lineTo(135f* scale,25f* scale);
+        heart3.lineTo(115f* scale,10f* scale);
+        heart3.lineTo(125f* scale,5f* scale);
+        heart3.close();
 
 
     }
@@ -99,7 +104,7 @@ public class GameView extends TextView {
         super.onDraw(canvas);
 
         if(!toDelete){
-            //canvas.drawRect(gameRect,paint);
+            //drawing the blocks
             for(int i = 0; i<Row ; i++){
                 for(int j=0;j<Colum;j++){
                     if(matrix[i][j] != deletRect) {
@@ -114,7 +119,26 @@ public class GameView extends TextView {
             invalidate();
         }
 
-        canvas.drawPath(heart , paint);
+        //drawing the hearts
+
+    canvas.drawPath(heart, heartPaint);
+    canvas.drawPath(heart2, heartPaint);
+    canvas.drawPath(heart3, heartPaint);
+    canvas.drawPath(heart, heartStroke);
+    canvas.drawPath(heart2, heartStroke);
+    canvas.drawPath(heart3, heartStroke);
+
+
+
+        //Losing lives
+        if(lostLives == 1){
+            canvas.drawPath(heart3,transperent);
+            //invalidate();
+        }
+        else if(lostLives == 2){
+            canvas.drawPath(heart2 , transperent);
+            canvas.drawPath(heart2 , heartStroke);
+        }
     }
 
 
@@ -144,6 +168,12 @@ public class GameView extends TextView {
     void delete(Rect rect , int index){
         toDelete = true;
         deletRect = rect;
+        invalidate();
+    }
+
+    void loseLife(){
+        lostLives=1;
+       // heartPaint.setColor(Color.BLACK);
         invalidate();
     }
 

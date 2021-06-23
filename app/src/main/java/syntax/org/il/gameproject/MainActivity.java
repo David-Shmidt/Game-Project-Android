@@ -48,7 +48,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView platform , ball;
-    View leftBorder,rightBorder, topBorder;
+    View leftBorder,rightBorder, topBorder,bottomBorder;
 
     float newX ,speed = 1;
     float ballX , ballY,ballZ;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     float left;
     float right;
     float ballMovementX = 10 , ballMovementY = 10 , ballSpeed = 2;
-    Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect();
+    Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect(),bottomBorderRect = new Rect();
     Rect ballRect = new Rect() , platformRectR = new Rect(), platformRectL = new Rect();
     GameView gameView;
     //Rect blockRect = new Rect();
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         leftBorder = findViewById(R.id.left_border_tv);
         rightBorder = findViewById(R.id.right_border_tv);
         topBorder = findViewById(R.id.top_border_tv);
+        bottomBorder = findViewById(R.id.bottom_brder_tv);
         ball = findViewById(R.id.ball_iv);
 
        // GameView gameView;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         leftBorderRect.set(leftBorder.getLeft() ,leftBorder.getTop() , leftBorder.getRight() , leftBorder.getBottom());
         rightBorderRect.set(rightBorder.getLeft() , rightBorder.getTop() , rightBorder.getRight() , rightBorder.getBottom());
         topBorderRect.set(topBorder.getLeft(), topBorder.getTop(),topBorder.getRight(),topBorder.getBottom());
+        bottomBorderRect.set(bottomBorder.getLeft(),bottomBorder.getTop(),bottomBorder.getRight(),bottomBorder.getBottom());
+
 
         platformRectR.set(platform.getLeft()/2 , platform.getTop() , platform.getRight(),platform.getBottom());
         ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             leftBorder.getHitRect( leftBorderRect);
             rightBorder.getHitRect(rightBorderRect);
             topBorder.getHitRect(topBorderRect);
+            bottomBorder.getHitRect(bottomBorderRect);
             //  block.getHitRect(blockRect);
 
 
@@ -187,6 +191,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             else if(Rect.intersects(ballRect, topBorderRect)){
                 ballMovementY = -1 * ballMovementY;
                 ball.setY(ball.getY() + 50);
+            }
+
+            else if(Rect.intersects(ballRect,bottomBorderRect)){
+                /*ballMovementY = -1 * ballMovementY;
+                ball.setY(ball.getY() - 50);*/
+                gameView.loseLife();
             }
 
             else {
