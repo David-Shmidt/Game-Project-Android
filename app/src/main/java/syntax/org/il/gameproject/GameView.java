@@ -32,12 +32,13 @@ public class GameView extends TextView {
     Paint paint;
     Paint transperent = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint heartPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint heartPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint heartPaint3 = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint heartStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
     Rect gameRect = new Rect();
     Rect deletRect = new Rect();
     RectF deletRectF  =new RectF();
     boolean toDelete = false;
-    boolean toDeleteF = false;
 
     int scale = (int)getResources().getDisplayMetrics().density;
     int lostLives = 0;
@@ -58,7 +59,11 @@ public class GameView extends TextView {
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         heartPaint.setColor(Color.RED);
+        heartPaint2.setColor(Color.RED);
+        heartPaint3.setColor(Color.RED);
         heartPaint.setStyle(Paint.Style.FILL);
+        heartPaint2.setStyle(Paint.Style.FILL);
+        heartPaint3.setStyle(Paint.Style.FILL);
         heartStroke.setColor(Color.BLACK);
         heartStroke.setStyle(Paint.Style.STROKE);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -122,8 +127,8 @@ public class GameView extends TextView {
         //drawing the hearts
 
     canvas.drawPath(heart, heartPaint);
-    canvas.drawPath(heart2, heartPaint);
-    canvas.drawPath(heart3, heartPaint);
+    canvas.drawPath(heart2, heartPaint2);
+    canvas.drawPath(heart3, heartPaint3);
     canvas.drawPath(heart, heartStroke);
     canvas.drawPath(heart2, heartStroke);
     canvas.drawPath(heart3, heartStroke);
@@ -173,7 +178,7 @@ public class GameView extends TextView {
 
     void loseLife(){
         lostLives=1;
-       // heartPaint.setColor(Color.BLACK);
+        heartPaint3.setColor(Color.TRANSPARENT);
         invalidate();
     }
 

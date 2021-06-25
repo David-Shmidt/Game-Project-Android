@@ -203,11 +203,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 for(Rect brick:bricks){
                     indexOfBrick++;
                     if (Rect.intersects(ballRect, brick)) {
-                        if(ballRect.top > brick.top) {
+                        //If ball is above brick
+                        if(ballRect.exactCenterY() > brick.exactCenterY()) {
+                            ballMovementY = -ballMovementY;
+                            ball.setY(ball.getY() + 20);
+                            //ball.setY(ball.getY());
+
+                        }
+                        //If ball is below brick
+                        else if(ballRect.exactCenterY() < brick.exactCenterY()){
                             ballMovementY = -ballMovementY;
                             ball.setY(ball.getY() - 20);
                         }
-                       // else if(ballRect.)
+
+                        //If ball hits brick from the right
+                        if(ballRect.exactCenterX() > brick.exactCenterX()){
+                            ballMovementX = -ballMovementX;
+                            ball.setX(ball.getX() + 10);
+                        }
+
+                        //If ball hits brick from the left
+                        else if(ballRect.exactCenterX() < brick.exactCenterX()){
+                            ballMovementX = -ballMovementX;
+                            ball.setX(ball.getX() + 10);
+                        }
                         gameView.delete(brick ,indexOfBrick);
                         brick.set(0, 0, 0, 0);
                         indexOfBrick = 0;
