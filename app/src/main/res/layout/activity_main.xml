@@ -10,8 +10,8 @@
 
 
 
-    <ImageView
-        android:layout_width="60dp"
+    <!--<ImageView
+        android:layout_width="match_parent"
         android:layout_height="15dp"
         android:scaleType="fitXY"
         android:src="@drawable/platform"
@@ -41,6 +41,7 @@
         android:layout_height="match_parent"
         android:background="@color/black"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
         android:id="@+id/right_border_tv"/>
 
     <View
@@ -54,12 +55,28 @@
         android:layout_height="0dp"
         android:background="@color/black"
         android:layout_alignParentBottom="true"
-        android:id="@+id/bottom_brder_tv"/>
+        android:id="@+id/bottom_brder_tv"/>-->
 
     <syntax.org.il.gameproject.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ball X Location: "
+        android:layout_centerVertical="true"
+        android:id="@+id/x_location"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ball Y location:"
+        android:layout_below="@+id/x_location"
+        android:id="@+id/y_location"/>-->
 
 
 

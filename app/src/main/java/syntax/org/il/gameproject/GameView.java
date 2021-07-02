@@ -2,28 +2,13 @@ package syntax.org.il.gameproject;
 
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Picture;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PictureDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.view.SurfaceView;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 
 
 public class GameView extends TextView {
@@ -34,29 +19,35 @@ public class GameView extends TextView {
     Paint heartPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint heartPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint heartPaint3 = new Paint(Paint.ANTI_ALIAS_FLAG);
-    Paint heartStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
-    Rect gameRect = new Rect();
+    Paint stroke = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint bluePaint;
     Rect deletRect = new Rect();
-    RectF deletRectF  =new RectF();
     boolean toDelete = false;
-
+    int space = 0;
     int scale = (int)getResources().getDisplayMetrics().density;
     int lostLives = 0;
+    Brick[] bricks;
+    int bricksCount = 0;
+    Rect borderRight = new Rect() , borderLeft = new Rect() , borderTop = new Rect() , borderBottom = new Rect();
+    Brick deleteBr = new Brick(0,0,0,0 , 0);
+    Ball ball;
+
 
 
     int Row, Colum;
     Rect[][] matrix;
-    Rect tempRect = new Rect();
+    //Rect tempRect = new Rect();
     int widthChange = 0 , heightCahnge = 0;
-    Rect[] bricks;
-    int bricksCount = 0;
     Path heart = new Path();
     Path heart2 = new Path();
     Path heart3 = new Path();
+    Path cracked = new Path();
 
 
 
     public GameView(Context context, AttributeSet attrs) {
+
+
         super(context, attrs);
         heartPaint.setColor(Color.RED);
         heartPaint2.setColor(Color.RED);
@@ -64,23 +55,32 @@ public class GameView extends TextView {
         heartPaint.setStyle(Paint.Style.FILL);
         heartPaint2.setStyle(Paint.Style.FILL);
         heartPaint3.setStyle(Paint.Style.FILL);
-        heartStroke.setColor(Color.BLACK);
-        heartStroke.setStyle(Paint.Style.STROKE);
+        stroke.setColor(Color.BLACK);
+        stroke.setStyle(Paint.Style.STROKE);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(getResources().getColor(R.color.teal_200));
         paint.setStyle(Paint.Style.FILL);
         transperent.setColor(Color.TRANSPARENT);
         transperent.setStyle(Paint.Style.FILL);
+        bluePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        bluePaint.setStyle(Paint.Style.FILL);
+        bluePaint.setColor(Color.BLUE);
+        borderRight.set(357*scale , 0 , 358*scale , 600*scale);
+        borderLeft.set(0 , 0 , 3*scale , 600*scale);
+        borderTop.set(0 , 0 , 400*scale , 1*scale);
+        borderBottom.set(0*scale , 559*scale , 400*scale , 560*scale);
 
         //Life
-        heart.moveTo(25f * scale,5f* scale);
-        heart.lineTo(35f* scale,10f* scale);
-        heart.lineTo(45f* scale,5f* scale);
-        heart.lineTo(55f* scale,10f* scale);
-        heart.lineTo(35f* scale,25f* scale);
-        heart.lineTo(15f* scale,10f* scale);
-        heart.lineTo(25f* scale,5f* scale);
+        heart.moveTo(25f* scale, 5f * scale);
+        heart.lineTo(35f * scale, 10f * scale);
+        heart.lineTo( 45f * scale, 5f * scale);
+        heart.lineTo( 55f* scale, 10f * scale);
+        heart.lineTo( 35f * scale, 25f * scale);
+        heart.lineTo( 15f * scale, 10f * scale);
+        heart.lineTo( 25f * scale, 5f * scale);
         heart.close();
+
+
 
 
         heart2.moveTo(75f* scale,5f* scale);
@@ -108,7 +108,7 @@ public class GameView extends TextView {
     protected void onDraw(Canvas canvas ) {
         super.onDraw(canvas);
 
-        if(!toDelete){
+        /*if(!toDelete){
             //drawing the blocks
             for(int i = 0; i<Row ; i++){
                 for(int j=0;j<Colum;j++){
@@ -119,19 +119,43 @@ public class GameView extends TextView {
             }
         }
         if(toDelete){
-            canvas.drawRect(deletRect,transperent);
+            //canvas.drawRect(deletRect,transperent);
+            cracked.moveTo(deletRect.left*scale, deletRect.height()/2*scale);
+            cracked.lineTo(deletRect.exactCenterX()*scale , deletRect.exactCenterY()*scale);
+            cracked.close();
+            canvas.drawPath(cracked,heartStroke);
             toDelete = false;
             invalidate();
+        }*/
+
+        for(int i = 0 ; i<Row * Colum ; i++){
+
+            if(bricks[i].getHit() == 1 ) {
+                canvas.drawRect(bricks[i].getLeft(), bricks[i].getTop(), bricks[i].getRight(), bricks[i].getBottom(), paint);
+                canvas.drawRect(bricks[i].getLeft(), bricks[i].getTop(), bricks[i].getRight(), bricks[i].getBottom(), stroke);
+            }
+            //canvas.drawText("100",bricks[i].getLeft() , bricks[i].getRight() , bluePaint);
+
         }
+
+        canvas.drawCircle(ball.getCenterX() , ball.getCenterY(), ball.getRadius(),bluePaint);
+
+        canvas.drawPath(heart , paint);
+        canvas.drawPath(heart,stroke);
+
+        canvas.drawRect(borderRight , paint);
+        canvas.drawRect(borderLeft , paint);
+        canvas.drawRect(borderTop , paint);
+        canvas.drawRect(borderBottom , paint);
 
         //drawing the hearts
 
-    canvas.drawPath(heart, heartPaint);
-    canvas.drawPath(heart2, heartPaint2);
-    canvas.drawPath(heart3, heartPaint3);
-    canvas.drawPath(heart, heartStroke);
-    canvas.drawPath(heart2, heartStroke);
-    canvas.drawPath(heart3, heartStroke);
+        canvas.drawPath(heart, heartPaint);
+        canvas.drawPath(heart2, heartPaint2);
+        canvas.drawPath(heart3, heartPaint3);
+        canvas.drawPath(heart, stroke);
+        canvas.drawPath(heart2, stroke);
+        canvas.drawPath(heart3, stroke);
 
 
 
@@ -142,38 +166,56 @@ public class GameView extends TextView {
         }
         else if(lostLives == 2){
             canvas.drawPath(heart2 , transperent);
-            canvas.drawPath(heart2 , heartStroke);
+            canvas.drawPath(heart2 , stroke);
         }
     }
 
 
 
-    Rect[] createMatrix(int row , int colum){
-        matrix = new Rect[row][colum];
-        Row = row;
-        Colum = colum;
-        bricks = new Rect[Row*Colum];
+    Brick[] createMatrix(int row , int colum){
+        //matrix = new Rect[row][colum];
+        Row = 5;
+        Colum = 5;
+        bricks = new Brick[Row*Colum];
         for(int i = 0; i<Row;i++){
-            heightCahnge += 35;
+            heightCahnge += 30;
+            // heightCahnge += 8;
             widthChange = 0;
             for(int j = 0; j<Colum; j++){
-                matrix[i][j] = new Rect();
-                matrix[i][j].set(scale*(50+widthChange) , scale*(30 + heightCahnge ),  scale*(100 + widthChange),  scale*(60 + heightCahnge) );
-                bricks[bricksCount] = matrix[i][j];
+                //matrix[i][j] = new Rect();
+
+                //matrix[i][j].set(scale*(50+widthChange) , scale*(30 + heightCahnge ),  scale*(100 + widthChange),  scale*(60 + heightCahnge) );
+                bricks[bricksCount] = new Brick(scale*(50+widthChange) , scale*(30 + heightCahnge ),  scale*(100 + widthChange),  scale*(60 + heightCahnge) , 1 );
+                // bricks[bricksCount] = new Brick(scale*(10+widthChange) , scale*(6 + heightCahnge ),  scale*(20 + widthChange),  scale*(12 + heightCahnge) );
                 bricksCount++;
-                //bricks[bricksCount] = new Rect(200+widthChange ,100 + heightCahnge ,400 + widthChange, 200 + heightCahnge);
                 //canvas.drawRect(matrix[i][j] , paint);
-                widthChange +=55;
+                widthChange +=50;
+                //widthChange +=12;
             }
         }
         invalidate();
         return bricks;
     }
 
-    void delete(Rect rect , int index){
-        toDelete = true;
-        deletRect = rect;
+    public Brick[] deleteBrick(Brick[] B, Brick b){
+        b = deleteBr;
+        bricks =B;
         invalidate();
+        return bricks;
+    }
+
+    Ball createCircle(float x,float y,float r){
+        ball = new Ball(x,y ,r);
+        invalidate();
+        return ball;
+    }
+
+    Ball moveCircle(Ball c,float x, float y){
+        c.setCenterX(c.getCenterX()+x);
+        c.setCenterY(c.getCenterY() + y);
+        ball = c;
+        invalidate();
+        return ball;
     }
 
     void loseLife(){
@@ -182,17 +224,6 @@ public class GameView extends TextView {
         invalidate();
     }
 
-    /* Rect sendParams(int sx, int sy , int ex , int ey){
-     *//* StartX = sx;
-        startY = sy;
-        endX = ex;
-        endY = ey;*//*
-
-        gameRect.set(sx,sy,ex,ey);
-        invalidate();
-        return gameRect;
-
-    }*/
 
 }
 
