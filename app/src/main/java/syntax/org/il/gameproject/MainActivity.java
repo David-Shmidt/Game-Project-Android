@@ -16,17 +16,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    ImageView platform , ball;
-    View leftBorder,rightBorder, topBorder,bottomBorder;
+    //ImageView platform , ball;
+    //View leftBorder,rightBorder, topBorder,bottomBorder;
 
-    float newX ,speed = 1;
-    float ballX , ballY,ballZ;
+    //float newX ,speed = 1;
+    //float ballX , ballY,ballZ;
 
     /*float scale = getResources().getDisplayMetrics().density;*/
 
     SensorManager sensorManger;
     private Sensor sensorAccel;
     float ballMovementX, ballMovementY;
+    int platMovementX;
     int scale;
     Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect(),bottomBorderRect = new Rect();
     Rect ballRect = new Rect();
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Rect brick = new Rect();
     int indexOfBrick = 0;
     Ball gameBall;
+    Brick platform;
 
     //Delete Later
 
@@ -57,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         scale  = (int)getResources().getDisplayMetrics().density;
-        ballMovementX =26*scale;
-        ballMovementY = 26*scale;
+        ballMovementX =5*scale;
+        ballMovementY = 5*scale;
 
 
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         gameView = (GameView) findViewById(R.id.game_view);
         bricks = gameView.createMatrix(5, 5);
         gameBall = gameView.createCircle(50*scale,500*scale,4*scale);
+        platform = gameView.createPlatform(200*scale,360*scale,270*scale,370*scale);
         //borders = gameView.getBorder(borders);
         //brickBoxes = new Rect[bricks.length];
 
@@ -84,10 +87,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
 
 
+        //Platform Movement
+
+        platMovementX = (int) (event.values[0]*scale);
+        if(platform.getLeft() > 0 && platMovementX > 0) {
+            gameView.movePlatform(platform, platMovementX);
+        }
+
+        if(platform.getRight() < 350 *scale && platMovementX  < 0){
+            gameView.movePlatform(platform, platMovementX);
+        }
+
 
         gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
 
-
+        //Ball Movement
         //Hits left side
         if (gameBall.getCenterX() < 0) {
             ballMovementX = -ballMovementX;
@@ -103,6 +117,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Hits Bottom
         if (gameBall.getCenterY() > 560 * scale) {
+            ballMovementY = -ballMovementY;
+        }
+
+        if(gameBall.hitsBrick(platform)){
+            ballMovementX = -ballMovementX;
             ballMovementY = -ballMovementY;
         }
 

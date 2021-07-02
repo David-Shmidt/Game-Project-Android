@@ -31,6 +31,7 @@ public class GameView extends TextView {
     Rect borderRight = new Rect() , borderLeft = new Rect() , borderTop = new Rect() , borderBottom = new Rect();
     Brick deleteBr = new Brick(0,0,0,0 , 0);
     Ball ball;
+    Brick platform;
 
 
 
@@ -108,26 +109,6 @@ public class GameView extends TextView {
     protected void onDraw(Canvas canvas ) {
         super.onDraw(canvas);
 
-        /*if(!toDelete){
-            //drawing the blocks
-            for(int i = 0; i<Row ; i++){
-                for(int j=0;j<Colum;j++){
-                    if(matrix[i][j] != deletRect) {
-                        canvas.drawRect(matrix[i][j], paint);
-                    }
-                }
-            }
-        }
-        if(toDelete){
-            //canvas.drawRect(deletRect,transperent);
-            cracked.moveTo(deletRect.left*scale, deletRect.height()/2*scale);
-            cracked.lineTo(deletRect.exactCenterX()*scale , deletRect.exactCenterY()*scale);
-            cracked.close();
-            canvas.drawPath(cracked,heartStroke);
-            toDelete = false;
-            invalidate();
-        }*/
-
         for(int i = 0 ; i<Row * Colum ; i++){
 
             if(bricks[i].getHit() == 1 ) {
@@ -139,6 +120,7 @@ public class GameView extends TextView {
         }
 
         canvas.drawCircle(ball.getCenterX() , ball.getCenterY(), ball.getRadius(),bluePaint);
+        canvas.drawRect(platform.getLeft() ,platform.getTop(),platform.getRight(),platform.getBottom(),paint);
 
         canvas.drawPath(heart , paint);
         canvas.drawPath(heart,stroke);
@@ -210,12 +192,26 @@ public class GameView extends TextView {
         return ball;
     }
 
+    Brick createPlatform(int l, int t , int r , int b){
+        platform = new Brick(l,t,r,b);
+        invalidate();
+        return  platform;
+    }
+
     Ball moveCircle(Ball c,float x, float y){
         c.setCenterX(c.getCenterX()+x);
         c.setCenterY(c.getCenterY() + y);
         ball = c;
         invalidate();
         return ball;
+    }
+
+    Brick movePlatform(Brick p , int x){
+        p.setRight(p.getRight() - x);
+        p.setLeft(p.getLeft() - x);
+        platform = p;
+        invalidate();
+        return platform;
     }
 
     void loseLife(){

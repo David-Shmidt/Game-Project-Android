@@ -6,6 +6,7 @@ import android.graphics.RectF;
 public class Brick extends RectF {
 
 
+    public  Brick(){}
     public Brick(int l , int t , int r , int b , int h ){
         left = l;
         top = t;
@@ -13,6 +14,13 @@ public class Brick extends RectF {
         bottom = b;
         hit = h;
     }
+    public Brick(int l , int t , int r , int b ){
+        left = l;
+        top = t;
+        right = r;
+        bottom = b;
+    }
+
 
     public int getRight() {
         return right;
@@ -34,7 +42,15 @@ public class Brick extends RectF {
         return hit;
     }
 
-    public void set(int l,int t,int r, int b ,int h){
+    public void setLeft(int left) {
+        this.left = left;
+    }
+
+    public void setRight(int right) {
+        this.right = right;
+    }
+
+    public void set(int l, int t, int r, int b , int h){
         this.left = l;
         this.top = t;
         this.right = r;
