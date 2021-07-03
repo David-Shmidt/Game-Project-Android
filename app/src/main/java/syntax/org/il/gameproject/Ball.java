@@ -33,6 +33,10 @@ public class Ball {
 
    }
 
+   public int hitsPlatform(Brick plat){
+
+   }
+
    boolean exactCenter(Ball c1 , Ball c2){
       return(c1.getCenterX() == c2.getCenterX() && c1.getCenterY() == c2.getCenterY());
    }
