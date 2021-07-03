@@ -34,7 +34,11 @@ public class ScoreAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+       // if (convertView == null)
+        //{
+      //      convertView =
+      //  }
+      return null;
     }
 }
 
