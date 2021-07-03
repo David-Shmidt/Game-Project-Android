@@ -34,7 +34,13 @@ public class Ball {
    }
 
    public int hitsPlatform(Brick plat){
-
+      if (Math.abs(this.getCenterY() - plat.getTop()) < this.getRadius()){
+         if(this.getCenterX() > plat.getLeft() && this.getCenterX() < plat.getRight()) {
+            return 1;
+         }
+         return  0;
+      }
+      else return 0;
    }
 
    boolean exactCenter(Ball c1 , Ball c2){

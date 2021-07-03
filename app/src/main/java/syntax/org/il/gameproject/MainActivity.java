@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Platform Movement
 
-        platMovementX = (int) (event.values[0]*scale);
+        platMovementX = 5 * (int) (event.values[0]*scale);
         if(platform.getLeft() > 0 && platMovementX > 0) {
             gameView.movePlatform(platform, platMovementX);
         }
@@ -120,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ballMovementY = -ballMovementY;
         }
 
-        if(gameBall.hitsBrick(platform)){
-            ballMovementX = -ballMovementX;
+        if(gameBall.hitsPlatform(platform) == 1){
             ballMovementY = -ballMovementY;
         }
 
