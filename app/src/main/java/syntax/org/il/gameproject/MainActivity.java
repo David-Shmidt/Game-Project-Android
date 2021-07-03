@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -117,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Hits Bottom
         if (gameBall.getCenterY() > 560 * scale) {
-            ballMovementY = -ballMovementY;
+            //ballMovementY = -ballMovementY;
+            gameView.loseLife();
+            gameBall = gameView.createCircle(50*scale,500*scale,4*scale);
         }
 
         if(gameBall.hitsPlatform(platform) == 1){
@@ -140,6 +143,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override
