@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
+
     }
 
     @Override
