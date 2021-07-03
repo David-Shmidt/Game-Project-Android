@@ -122,8 +122,8 @@ public class GameView extends TextView {
         canvas.drawCircle(ball.getCenterX() , ball.getCenterY(), ball.getRadius(),bluePaint);
         canvas.drawRect(platform.getLeft() ,platform.getTop(),platform.getRight(),platform.getBottom(),paint);
 
-        canvas.drawPath(heart , paint);
-        canvas.drawPath(heart,stroke);
+       // canvas.drawPath(heart , paint);
+        //canvas.drawPath(heart,stroke);
 
         canvas.drawRect(borderRight , paint);
         canvas.drawRect(borderLeft , paint);
@@ -142,13 +142,13 @@ public class GameView extends TextView {
 
 
         //Losing lives
-        if(lostLives == 1){
+        if(lostLives >= 1){
             canvas.drawPath(heart3,transperent);
             //invalidate();
         }
-        else if(lostLives == 2){
+        if(lostLives >= 2){
             canvas.drawPath(heart2 , transperent);
-            canvas.drawPath(heart2 , stroke);
+            //canvas.drawPath(heart2 , stroke);
         }
     }
 
@@ -215,8 +215,17 @@ public class GameView extends TextView {
     }
 
     void loseLife(){
-        lostLives=1;
-        heartPaint3.setColor(Color.TRANSPARENT);
+        lostLives++;
+        if(lostLives >= 1) {
+            heartPaint3.setColor(Color.TRANSPARENT);
+        }
+        if(lostLives >= 2){
+            heartPaint2.setColor(Color.TRANSPARENT);
+        }
+
+        if(lostLives == 3){
+            heartPaint.setColor(Color.TRANSPARENT);
+        }
         invalidate();
     }
 

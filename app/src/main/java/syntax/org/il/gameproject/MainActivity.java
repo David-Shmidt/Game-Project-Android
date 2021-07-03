@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int indexOfBrick = 0;
     Ball gameBall;
     Brick platform;
+    boolean startGame = false;
 
     //Delete Later
 
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         scale  = (int)getResources().getDisplayMetrics().density;
-        ballMovementX =5*scale;
-        ballMovementY = 5*scale;
+        ballMovementX = -5*scale;
+        ballMovementY = -5*scale;
 
 
 
@@ -69,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         gameView = (GameView) findViewById(R.id.game_view);
         bricks = gameView.createMatrix(5, 5);
-        gameBall = gameView.createCircle(50*scale,500*scale,4*scale);
-        platform = gameView.createPlatform(200*scale,360*scale,270*scale,370*scale);
+        gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
+        platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
         //borders = gameView.getBorder(borders);
         //brickBoxes = new Rect[bricks.length];
 
@@ -84,57 +85,65 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+
     @Override
     public void onSensorChanged(SensorEvent event) {
 
 
         //Platform Movement
 
-        platMovementX = 5 * (int) (event.values[0]*scale);
-        if(platform.getLeft() > 0 && platMovementX > 0) {
-            gameView.movePlatform(platform, platMovementX);
-        }
+        if(startGame) {
 
-        if(platform.getRight() < 350 *scale && platMovementX  < 0){
-            gameView.movePlatform(platform, platMovementX);
-        }
-
-
-        gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
-
-        //Ball Movement
-        //Hits left side
-        if (gameBall.getCenterX() < 0) {
-            ballMovementX = -ballMovementX;
-        }
-        //Hits top
-        if (gameBall.getCenterY() < 0) {
-            ballMovementY = -ballMovementY;
-        }
-        //Hits right side
-        if (gameBall.getCenterX() > 350 * scale) {
-            ballMovementX = -ballMovementX;
-        }
-
-        //Hits Bottom
-        if (gameBall.getCenterY() > 560 * scale) {
-            //ballMovementY = -ballMovementY;
-            gameView.loseLife();
-            gameBall = gameView.createCircle(50*scale,500*scale,4*scale);
-        }
-
-        if(gameBall.hitsPlatform(platform) == 1){
-            ballMovementY = -ballMovementY;
-        }
-
-        for(Brick brick:bricks){
-            if (gameBall.hitsBrick(brick)){
-                ballMovementX = -ballMovementX;
-                ballMovementY = -ballMovementY;
-                brick.set(0,0,0,0,0);
-                bricks = gameView.deleteBrick(bricks , brick);
-                //index = 0;
+            platMovementX = 5 * (int) (event.values[0] * scale);
+            if (platform.getLeft() > 0 && platMovementX > 0) {
+                gameView.movePlatform(platform, platMovementX);
             }
+
+            if (platform.getRight() < 350 * scale && platMovementX < 0) {
+                gameView.movePlatform(platform, platMovementX);
+            }
+
+
+            gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
+
+            //Ball Movement
+            //Hits left side
+            if (gameBall.getCenterX() < 0) {
+                ballMovementX = -ballMovementX;
+            }
+            //Hits top
+            if (gameBall.getCenterY() < 0) {
+                ballMovementY = -ballMovementY;
+            }
+            //Hits right side
+            if (gameBall.getCenterX() > 350 * scale) {
+                ballMovementX = -ballMovementX;
+            }
+
+            //Hits Bottom and Loses life
+            if (gameBall.getCenterY() > 560 * scale) {
+                //ballMovementY = -ballMovementY;
+                gameView.loseLife();
+                gameBall = gameView.createCircle((platform.getRight() - platform.getLeft()) / 2, platform.getTop() + 2*scale, 4 * scale);
+                startGame = false;
+                ballMovementX = -5*scale;
+                ballMovementY = -5*scale;
+            }
+
+            if (gameBall.hitsPlatform(platform) == 1) {
+                ballMovementY = -ballMovementY;
+            }
+
+            for (Brick brick : bricks) {
+                if (gameBall.hitsBrick(brick)) {
+                    ballMovementX = -ballMovementX;
+                    ballMovementY = -ballMovementY;
+                    brick.set(0, 0, 0, 0, 0);
+                    bricks = gameView.deleteBrick(bricks, brick);
+                    //index = 0;
+                }
+            }
+
         }
 
 
@@ -147,7 +156,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            startGame = true;
+        }
+
         return super.onTouchEvent(event);
+
+
 
     }
 
