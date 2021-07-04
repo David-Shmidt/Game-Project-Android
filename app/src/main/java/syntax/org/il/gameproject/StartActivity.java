@@ -37,3 +37,4 @@ public class StartActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+//try to fix
