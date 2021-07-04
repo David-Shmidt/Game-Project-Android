@@ -32,6 +32,7 @@
         app:endIconTint="@color/white"
         app:endIconMode="clear_text"
         android:textColorHint="@color/white"
+        app:boxBackgroundColor="#501967"
         app:counterEnabled="true"
         app:counterMaxLength="20"
         app:counterTextColor="@color/white"
@@ -43,9 +44,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:layout_height="51dp"
             android:maxLength="21"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
