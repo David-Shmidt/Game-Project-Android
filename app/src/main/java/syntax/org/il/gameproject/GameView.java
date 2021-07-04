@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.Display;
+import android.view.SurfaceView;
 import android.widget.TextView;
 
 
@@ -35,6 +37,9 @@ public class GameView extends TextView {
 
 
 
+
+
+
     int Row, Colum;
     Rect[][] matrix;
     //Rect tempRect = new Rect();
@@ -50,6 +55,8 @@ public class GameView extends TextView {
 
 
         super(context, attrs);
+
+        //Paints
         heartPaint.setColor(Color.RED);
         heartPaint2.setColor(Color.RED);
         heartPaint3.setColor(Color.RED);
@@ -66,10 +73,13 @@ public class GameView extends TextView {
         bluePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bluePaint.setStyle(Paint.Style.FILL);
         bluePaint.setColor(Color.BLUE);
-        borderRight.set(357*scale , 0 , 358*scale , 600*scale);
+
+        //Borders
+
+        /*borderRight.set(357*scale , 0 , 358*scale , 600*scale);
         borderLeft.set(0 , 0 , 3*scale , 600*scale);
         borderTop.set(0 , 0 , 400*scale , 1*scale);
-        borderBottom.set(0*scale , 559*scale , 400*scale , 560*scale);
+        borderBottom.set(0*scale , 559*scale , 400*scale , 560*scale);*/
 
         //Life
         heart.moveTo(25f* scale, 5f * scale);
@@ -227,6 +237,13 @@ public class GameView extends TextView {
             heartPaint.setColor(Color.TRANSPARENT);
         }
         invalidate();
+    }
+
+    void setBorders(int screenX ,int screenY){
+        borderRight.set((screenX - 1) * scale, 0, screenX * scale, screenY* scale);
+        borderLeft.set(0, 0, 3 * scale, screenY * scale);
+        borderTop.set(0, 0, screenX * scale, 1 * scale);
+        borderBottom.set(0 * scale, (screenY-1) * scale, screenX * scale, screenY * scale);
     }
 
 

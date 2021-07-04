@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,6 +12,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,7 +45,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     //Delete Later
 
-    TextView ball_x , ball_y;
+    int screenX , screenY;
+    Display display;
+    Point size = new Point();
+
 
 
 
@@ -57,7 +62,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*display = getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        screenX = size.x;
+        screenY = size.y;
+*/
 
 
         scale  = (int)getResources().getDisplayMetrics().density;
@@ -69,11 +78,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         gameView = (GameView) findViewById(R.id.game_view);
+        display = getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        screenX = size.x;
+        screenY = size.y;
+
         bricks = gameView.createMatrix(5, 5);
         gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
         platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
+        gameView.setBorders(screenX,screenY);
         //borders = gameView.getBorder(borders);
         //brickBoxes = new Rect[bricks.length];
+
 
 
 
@@ -117,12 +133,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 ballMovementY = -ballMovementY;
             }
             //Hits right side
-            if (gameBall.getCenterX() > 350 * scale) {
+            if (gameBall.getCenterX() > screenX * scale) {
                 ballMovementX = -ballMovementX;
             }
 
             //Hits Bottom and Loses life
-            if (gameBall.getCenterY() > 560 * scale) {
+            if (gameBall.getCenterY() > screenY * scale) {
                 //ballMovementY = -ballMovementY;
                 gameView.loseLife();
                 gameBall = gameView.createCircle((platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 4*scale, 4 * scale);
