@@ -84,8 +84,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         screenY = size.y;
 
         bricks = gameView.createMatrix(5, 5);
-        gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
-        platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
+        //gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
+        //platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
+        platform = gameView.createPlatform((screenX/2),(screenY - 50*scale),(screenX/2 +100*scale),(screenY-40*scale));
+        gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight()-platform.getLeft())/2 , platform.getTop()- 20*scale , 4*scale);
         gameView.setBorders(screenX,screenY);
         //borders = gameView.getBorder(borders);
         //brickBoxes = new Rect[bricks.length];
@@ -111,12 +113,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             platMovementX = 5 * (int) (event.values[0] * scale);
             if (platform.getLeft() > 0 && platMovementX > 0) {
                 gameView.movePlatform(platform, platMovementX);
-                gameView.moveCircle(gameBall , -platMovementX , 0);
+                if(startGame == false) {
+                    gameView.moveCircle(gameBall, -platMovementX, 0);
+                }
             }
 
             if (platform.getRight() < 350 * scale && platMovementX < 0) {
                 gameView.movePlatform(platform, platMovementX);
-                gameView.moveCircle(gameBall , -platMovementX , 0);
+                if(startGame ==false) {
+                    gameView.moveCircle(gameBall, -platMovementX, 0);
+                }
             }
 
 
@@ -141,8 +147,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (gameBall.getCenterY() > screenY) {
                 //ballMovementY = -ballMovementY;
                 gameView.loseLife();
-                gameBall = gameView.createCircle((platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 4*scale, 4 * scale);
-                startGame = false;
+                gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight()-platform.getLeft())/2 , platform.getTop()- 20*scale , 4*scale);                startGame = false;
                 ballMovementX = -5*scale;
                 ballMovementY = -5*scale;
             }
