@@ -1,9 +1,14 @@
 package syntax.org.il.gameproject;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +19,7 @@ public class StartActivity extends AppCompatActivity {
 
     //Play Button
     private Button button;
+    ImageView Title;
 
 
     @Override
@@ -29,6 +35,18 @@ public class StartActivity extends AppCompatActivity {
                 openMainActivity();
             }
         });
+
+        //animation Title
+        Title = findViewById(R.id.imageView5);
+        @SuppressLint("ObjectAnimatorBinding") ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+                Title,
+                PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+                PropertyValuesHolder.ofFloat("scaley", 1.2f)
+        );
+        objectAnimator.setDuration(650);
+        objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        objectAnimator.start(); //end of write for animation title
     }
 
     //Play button - Intent
