@@ -92,18 +92,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Platform Movement
 
-        if(startGame) {
-
             platMovementX = 5 * (int) (event.values[0] * scale);
             if (platform.getLeft() > 0 && platMovementX > 0) {
                 gameView.movePlatform(platform, platMovementX);
+                gameView.moveCircle(gameBall , -platMovementX , 0);
             }
 
             if (platform.getRight() < 350 * scale && platMovementX < 0) {
                 gameView.movePlatform(platform, platMovementX);
+                gameView.moveCircle(gameBall , -platMovementX , 0);
             }
 
 
+        if(startGame) {
             gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
 
             //Ball Movement
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (gameBall.getCenterY() > 560 * scale) {
                 //ballMovementY = -ballMovementY;
                 gameView.loseLife();
-                gameBall = gameView.createCircle((platform.getRight() - platform.getLeft()) / 2, platform.getTop() + 2*scale, 4 * scale);
+                gameBall = gameView.createCircle((platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 4*scale, 4 * scale);
                 startGame = false;
                 ballMovementX = -5*scale;
                 ballMovementY = -5*scale;
