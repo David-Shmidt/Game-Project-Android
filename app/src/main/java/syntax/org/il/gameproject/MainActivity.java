@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 ballMovementY = -ballMovementY;
             }
             //Hits right side
-            if (gameBall.getCenterX() > screenX * scale) {
+            if (gameBall.getCenterX() > screenX) {
                 ballMovementX = -ballMovementX;
             }
 
             //Hits Bottom and Loses life
-            if (gameBall.getCenterY() > screenY * scale) {
+            if (gameBall.getCenterY() > screenY) {
                 //ballMovementY = -ballMovementY;
                 gameView.loseLife();
                 gameBall = gameView.createCircle((platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 4*scale, 4 * scale);

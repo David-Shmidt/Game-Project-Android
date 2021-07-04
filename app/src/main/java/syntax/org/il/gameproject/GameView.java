@@ -240,10 +240,10 @@ public class GameView extends TextView {
     }
 
     void setBorders(int screenX ,int screenY){
-        borderRight.set((screenX - 1) * scale, 0, screenX * scale, screenY* scale);
-        borderLeft.set(0, 0, 3 * scale, screenY * scale);
-        borderTop.set(0, 0, screenX * scale, 1 * scale);
-        borderBottom.set(0 * scale, (screenY-1) * scale, screenX * scale, screenY * scale);
+        borderRight.set((screenX - 1), 0, screenX , screenY);
+        borderLeft.set(0, 0, 3 , screenY );
+        borderTop.set(0, 0, screenX , 1 );
+        borderBottom.set(0 * scale, (screenY-1) , screenX , screenY );
     }
 
 
