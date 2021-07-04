@@ -345,5 +345,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             else
                 platform.setX( platformX - newX);
         }*/
-
+//try to fix
 //...............................................................................................//
