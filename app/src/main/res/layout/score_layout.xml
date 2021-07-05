@@ -13,7 +13,7 @@
         android:src="@drawable/golden_trophy"
         android:layout_gravity="start"
         android:layout_margin="10dp"
-        android:id="@+id/Test"/>
+        android:id="@+id/trophy"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="username"
+            android:text="UserName"
             android:id="@+id/username"/>
 
 

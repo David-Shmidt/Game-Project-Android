@@ -4,17 +4,9 @@
     android:layout_height="match_parent">
 
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/golden_trophy"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/Score_list"
-            />
-
-    <ListView
-        android:id="@+id/Score_list"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/recycler"/>
 
 </RelativeLayout>
