@@ -36,6 +36,16 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        //Score button + intent
+        Button scoreBtn =findViewById(R.id.score_Btn);
+        scoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2nd = new Intent(StartActivity.this,SecondActivity.class);
+                startActivity(intent2nd);
+            }
+        });
+
         //animation Title
         Title = findViewById(R.id.imageView5);
         @SuppressLint("ObjectAnimatorBinding") ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(

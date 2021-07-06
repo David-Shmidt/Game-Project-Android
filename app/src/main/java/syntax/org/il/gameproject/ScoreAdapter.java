@@ -49,9 +49,9 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
     @Override
     public void onBindViewHolder(@NonNull ScoreViewHolder holder, int position) {
 
-        Score score =scores.get(position);
+        Score score = scores.get(position);
         holder.nameTv.setText(score.getName());
-        holder.scoreTv.setText(score.getScore());
+        holder.scoreTv.setText(score.getScore()+"");
         holder.trophyIv.setImageResource(score.getTrophyId());
     }
 
