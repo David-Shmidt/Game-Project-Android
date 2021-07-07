@@ -26,25 +26,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //float ballX , ballY,ballZ;
 
     /*float scale = getResources().getDisplayMetrics().density;*/
+    /*Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect(),bottomBorderRect = new Rect();
+    Rect ballRect = new Rect();
+    Rect platformRectR  =new Rect() , platformRectL = new Rect();*/
+
 
     SensorManager sensorManger;
     private Sensor sensorAccel;
-    float ballMovementX, ballMovementY;
+    float ballMovementX, ballMovementY,speedx,speedY;
     int platMovementX;
     int scale;
-    Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect(),bottomBorderRect = new Rect();
-    Rect ballRect = new Rect();
-    Rect platformRectR  =new Rect() , platformRectL = new Rect();
     GameView gameView;
     Brick[] bricks;
     Rect brick = new Rect();
     int indexOfBrick = 0;
     Ball gameBall;
     Brick platform;
+    float angleX;
+    float angleY;
+    float angle;
+    boolean up = true;
+    boolean right = true;
     boolean startGame = false;
-
-    //Delete Later
-
     int screenX , screenY;
     Display display;
     Point size = new Point();
@@ -62,16 +65,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*display = getWindowManager().getDefaultDisplay();
-        display.getSize(size);
-        screenX = size.x;
-        screenY = size.y;
-*/
+
 
 
         scale  = (int)getResources().getDisplayMetrics().density;
-        ballMovementX = -5*scale;
-        ballMovementY = -5*scale;
+        angle = (float)Math.PI;
+        angleX = (float)(Math.cos(angle/18));
+        angleY = (float)(Math.sin(angle/18));
+        speedx = 7*scale;
+        speedY = 7*scale;
+        ballMovementX = speedx;
+        ballMovementY = speedY;
 
 
 
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         bricks = gameView.createMatrix(5, 5);
         //gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
         //platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
-        platform = gameView.createPlatform((screenX/2),(screenY - 50*scale),(screenX/2 +100*scale),(screenY-40*scale));
+        platform = gameView.createPlatform((screenX/2),(screenY - 50*scale),(screenX/2 +50*scale),(screenY-40*scale));
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight()-platform.getLeft())/2 , platform.getTop()- 20*scale , 4*scale);
         gameView.setBorders(screenX,screenY);
         //borders = gameView.getBorder(borders);
@@ -113,14 +117,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             platMovementX = 5 * (int) (event.values[0] * scale);
             if (platform.getLeft() > 0 && platMovementX > 0) {
                 gameView.movePlatform(platform, platMovementX);
-                if(startGame == false) {
+                if(!startGame) {
                     gameView.moveCircle(gameBall, -platMovementX, 0);
                 }
             }
 
             if (platform.getRight() < 350 * scale && platMovementX < 0) {
                 gameView.movePlatform(platform, platMovementX);
-                if(startGame ==false) {
+                if(!startGame) {
                     gameView.moveCircle(gameBall, -platMovementX, 0);
                 }
             }
@@ -132,15 +136,44 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //Ball Movement
             //Hits left side
             if (gameBall.getCenterX() < 0) {
-                ballMovementX = -ballMovementX;
+                right = true;
+                if(up){
+                    setAngles(1);
+                    ballMovementY = -1*speedY * angleY;
+                }
+                else if(!up){
+                    setAngles(3);
+                    ballMovementY = -1*speedY * angleY;
+                }
+                ballMovementX = speedx * angleX;
             }
             //Hits top
             if (gameBall.getCenterY() < 0) {
-                ballMovementY = -ballMovementY;
+                up = false;
+                if(right){
+                    setAngles(3);
+                }
+                else if(!right){
+                    setAngles(4);
+                }
+                ballMovementX = speedx * angleX;
+                ballMovementY =-1* speedY * angleY;
             }
             //Hits right side
             if (gameBall.getCenterX() > screenX) {
-                ballMovementX = -ballMovementX;
+                right = false;
+                if(up) {
+                    setAngles(2);
+                    ballMovementY = -1*speedY * angleY;
+                }
+                else if(!up){
+                    setAngles(4);
+                    ballMovementY = -1*speedY * angleY;
+                }
+                ballMovementX = speedx * angleX;
+                if(ballMovementX>0){
+                    ballMovementX = -ballMovementX;
+                }
             }
 
             //Hits Bottom and Loses life
@@ -148,20 +181,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //ballMovementY = -ballMovementY;
                 gameView.loseLife();
                 gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight()-platform.getLeft())/2 , platform.getTop()- 20*scale , 4*scale);                startGame = false;
-                ballMovementX = -5*scale;
-                ballMovementY = -5*scale;
+                ballMovementX = speedx;
+                ballMovementY = speedY;
             }
 
             if (gameBall.hitsPlatform(platform) == 1) {
-                ballMovementY = -ballMovementY;
+                up = true;
+                if(right){
+                    setAngles(1);
+
+                }
+                else if(!right){
+                    setAngles(2);
+                }
+                ballMovementX = speedx * angleX;
+                ballMovementY =-1* speedY * angleY;
             }
 
             for (Brick brick : bricks) {
                 if (gameBall.hitsBrick(brick)) {
+                    up = !up;
+                    right = !right;
                     ballMovementX = -ballMovementX;
                     ballMovementY = -ballMovementY;
-                    brick.set(0, 0, 0, 0, 0);
-                    bricks = gameView.deleteBrick(bricks, brick);
+                    brick.set(0,0,0,0,0);
+                    //brick.setRectF();
+                    bricks = gameView.deleteBrick(bricks , brick);
+                    break;
                     //index = 0;
                 }
             }
@@ -202,6 +248,78 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(sensorAccel != null){
             sensorManger.registerListener(this , sensorAccel , SensorManager.SENSOR_DELAY_GAME);
         }
+    }
+
+    float upRightAngle(){
+        int n =  (int)(Math.random() *3) +1;
+        switch (n){
+            case 1:
+                return (float)Math.PI/6;
+            case 2:
+                return(float)Math.PI/4;
+            case 3:
+                return (float)Math.PI/3;
+        }
+        return 0;
+    }
+
+    float upLeftAngle(){
+        int n = (int)(Math.random() * 3) +1;
+        switch (n){
+            case 1:
+                return 2 * (float)Math.PI/3;
+            case 2:
+                return 3* (float)Math.PI/4;
+            case 3:
+                return 5 * (float)Math.PI/6;
+        }
+        return 0;
+    }
+
+    float downRightAngle(){
+        int n = (int)(Math.random()*3) +1;
+        switch (n){
+            case 1:
+                return 5 * (float)Math.PI/3;
+            case 2:
+                return 7* (float)Math.PI/4;
+            case 3:
+                return 11 * (float)Math.PI/6;
+        }
+        return 0;
+    }
+
+    float downLeftAngle(){
+        int n = (int)(Math.random()*3) +1;
+        switch (n){
+            case 1:
+                return 4 * (float)Math.PI/3;
+            case 2:
+                return 5* (float)Math.PI/4;
+            case 3:
+                return 7 * (float)Math.PI/6;
+        }
+        return 0;
+    }
+
+
+    void setAngles(int type){
+        switch (type){
+            case 1:
+                angle = upRightAngle();
+                break;
+            case 2:
+                angle = upLeftAngle();
+                break;
+            case 3:
+                angle = downRightAngle();
+                break;
+            case 4:
+                angle = downLeftAngle();
+                break;
+        }
+        angleX = (float)(Math.cos(angle));
+        angleY = (float)(Math.sin(angle));
     }
 
 
