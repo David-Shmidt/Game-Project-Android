@@ -10,13 +10,13 @@ public class Levels {
 
     public void setLevel_1() {
         Row = 1;
-        Colum = 1;
+        Colum = 4;
         Brick[] bricks = new Brick[Row * Colum];
         for (int i = 0; i < Row; i++) {
             heightChange += 30;
             widthChange = 0;
             for (int j = 0; j < Colum; j++) {
-                bricks[index] = new Brick(scale * (50 + widthChange), scale * (30 + heightChange), scale * (100 + widthChange), scale * (60 + heightChange), 1);
+                bricks[index] = new Brick(scale * (50 + widthChange), scale * (60 + heightChange), scale * (100 + widthChange), scale * (90 + heightChange));
                 //bricks[index].setRectF();
                 index++;
                 widthChange += 50;
@@ -34,7 +34,25 @@ public class Levels {
             heightChange += 30;
             widthChange = 0;
             for (int j = 0; j < Colum; j++) {
-                bricks[index] = new Brick(scale * (50 + widthChange), scale * (30 + heightChange), scale * (100 + widthChange), scale * (60 + heightChange), 1);
+                bricks[index] = new Brick(scale * (50 + widthChange), scale * (60 + heightChange), scale * (100 + widthChange), scale * (90 + heightChange), 1);
+                //bricks[index].setRectF();
+                index++;
+                widthChange += 50;
+            }
+        }
+        levels[1] = bricks;
+        index = 0;
+    }
+
+    public void setLevel_3() {
+        Row = 2;
+        Colum = 4;
+        Brick[] bricks = new Brick[Row * Colum];
+        for (int i = 0; i < Row; i++) {
+            heightChange += 30;
+            widthChange = 0;
+            for (int j = 0; j < Colum; j++) {
+                bricks[index] = new Brick(scale * (50 + widthChange), scale * (60 + heightChange), scale * (100 + widthChange), scale * (90 + heightChange), 1);
                 //bricks[index].setRectF();
                 index++;
                 widthChange += 50;
