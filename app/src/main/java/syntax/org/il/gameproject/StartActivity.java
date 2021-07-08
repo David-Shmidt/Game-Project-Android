@@ -5,6 +5,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
 
 
 public class StartActivity extends AppCompatActivity {
@@ -20,12 +22,18 @@ public class StartActivity extends AppCompatActivity {
     //Play Button
     private Button button;
     ImageView Title;
+    SharedPreferences sp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        TextInputEditText username;
+        //need to get a name from MD
+       // username = findViewById(R.id.textInputEdit);
+        //share preferences
+        sp = getSharedPreferences("details",MODE_PRIVATE);
 
         //Play button
         button = findViewById(R.id.play_btn);
@@ -63,6 +71,17 @@ public class StartActivity extends AppCompatActivity {
     public void openMainActivity() {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+        SharedPreferences.Editor editor =sp.edit();
+        //cant use gettext()
+       // editor.putString("user_name",username.getText().toString());
+        editor.commit();
     }
 }
 //try to fix

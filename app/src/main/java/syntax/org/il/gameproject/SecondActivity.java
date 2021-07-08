@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class SecondActivity extends AppCompatActivity {
@@ -31,7 +33,9 @@ public class SecondActivity extends AppCompatActivity {
         scores.add(new Score("Test",21));
         scores.add(new Score("Test",335));
 
+        Collections.sort(scores);
         ScoreAdapter scoreAdapter = new ScoreAdapter(scores);
         recyclerView.setAdapter(scoreAdapter);
+
     }
 }

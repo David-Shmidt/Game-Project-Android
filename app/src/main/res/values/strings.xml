@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Game Project</string>
-    <string name="todo">TODO</string>
     <string name="name">Name</string>
+    <string name="play_btn">Play!</string>
+    <string name="score_btn">Score</string>
+    <string name="back_btn">Back</string>
 </resources>
