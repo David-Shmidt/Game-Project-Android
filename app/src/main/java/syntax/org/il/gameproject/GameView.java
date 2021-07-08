@@ -162,22 +162,10 @@ public class GameView extends SurfaceView {
 
 
 
-    Brick[] createMatrix(int n) {
+    void createMatrix(Brick[] b) {
 
-        level += n;
-        switch (level) {
-            case 1:
-                levels.setLevel_1();
-                bricks = levels.getLevel_1();
-                break;
-            case 2:
-                levels.setLevel_2();
-                bricks = levels.getLevel_2();
-                break;
-        }
+        bricks = b;
         invalidate();
-        return bricks;
-
     }
 
     public Brick[] deleteBrick(Brick[] B, Brick b){

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -15,13 +14,10 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     //ImageView platform , ball;
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //Defining all the Variables
     SensorManager sensorManger;
     private Sensor sensorAccel;
-    float ballMovementX, ballMovementY, speedx, speedY;
+    float ballMovementX, ballMovementY, speedX, speedY;
     int platMovementX;
     int scale;
     GameView gameView;
@@ -62,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     View dialogView;
     AlertDialog.Builder builder;
     AlertDialog lvlComplete;
+    int lives = 3;
+    Levels levels;
+    int level = 1;
 
 
     boolean paused = false;
@@ -78,9 +77,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angle = (float) Math.PI;
         angleX = (float) (Math.cos(angle / 18));
         angleY = (float) (Math.sin(angle / 18));
-        speedx = 7 * scale;
+        speedX = 7 * scale;
         speedY = 7 * scale;
-        ballMovementX = speedx;
+        ballMovementX = speedX;
         ballMovementY = speedY;
 
 
@@ -90,19 +89,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         screenX = size.x;
         screenY = size.y;
 
-        bricks = gameView.createMatrix(1);
-        //gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
-        //platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
+        levels = new Levels(scale);
+        setLevel(0);
         platform = gameView.createPlatform((screenX / 2), (screenY - 50 * scale), (screenX / 2 + 50 * scale), (screenY - 40 * scale));
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
         gameView.setBorders(screenX, screenY);
-        //borders = gameView.getBorder(borders);
-        //brickBoxes = new Rect[bricks.length];
+
 
 
         sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //sensorGyro = sensorManger.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
 
     }
 
@@ -144,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     setAngles(3);
                     ballMovementY = -1 * speedY * angleY;
                 }
-                ballMovementX = speedx * angleX;
+                ballMovementX = speedX * angleX;
             }
             //Hits top
             if (gameBall.getCenterY() < 0) {
@@ -154,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 } else if (!right) {
                     setAngles(4);
                 }
-                ballMovementX = speedx * angleX;
+                ballMovementX = speedX * angleX;
                 ballMovementY = -1 * speedY * angleY;
             }
             //Hits right side
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     setAngles(4);
                     ballMovementY = -1 * speedY * angleY;
                 }
-                ballMovementX = speedx * angleX;
+                ballMovementX = speedX * angleX;
                 if (ballMovementX > 0) {
                     ballMovementX = -ballMovementX;
                 }
@@ -175,12 +172,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             //Hits Bottom and Loses life
             if (gameBall.getCenterY() > screenY) {
-                //ballMovementY = -ballMovementY;
+                lives--;
                 gameView.loseLife();
                 gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
                 startGame = false;
-                ballMovementX = speedx;
-                ballMovementY = speedY;
+                ballMovementX = 0;
+                ballMovementY = -speedY;
+                if(lives == 0){
+                    gameOver();
+                }
             }
 
             if (gameBall.hitsPlatform(platform) == 1) {
@@ -191,10 +191,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 } else if (!right) {
                     setAngles(2);
                 }
-                ballMovementX = speedx * angleX;
+                ballMovementX = speedX * angleX;
                 ballMovementY = -1 * speedY * angleY;
             }
 
+            //Checks if Ball intecects Bricks
             for (Brick brick : bricks) {
                 if (gameBall.hitsBrick(brick)) {
                     bricksDestroyed++;
@@ -209,6 +210,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     //index = 0;
                 }
             }
+            //If all Bricks are Destroyed pop Alert Dialog
+            //Also pause the game
             if (bricks.length == bricksDestroyed) {
                 paused = true;
                 levelUp();
@@ -228,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        //The ball wint move untill the screen is pressed
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
             startGame = true;
@@ -254,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    //Setting diffrent angles for different directions
     float upRightAngle(){
         int n =  (int)(Math.random() *3) +1;
         switch (n){
@@ -307,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
 
+
     void setAngles(int type){
         switch (type){
             case 1:
@@ -326,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angleY = (float)(Math.sin(angle));
     }
 
+    //Finishig Level Successfully and poping Dialog
     void levelUp(){
 
         handler.post(new Runnable() {
@@ -347,6 +354,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    //Click Listener Class for Dialogs Buttons
     public class AlertDialogsOnClickListener implements View.OnClickListener{
 
         @Override
@@ -354,20 +362,59 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
             paused = false;
             startGame = false;
+            bricksDestroyed = 0;
+
             switch(v.getId()){
                 case R.id.next_level:
-                    bricksDestroyed = 0;
-                    bricks = gameView.createMatrix(1);
-                    lvlComplete.dismiss();
+                    setLevel(1);
                     break;
                 case R.id.restart_level:
-                    bricksDestroyed = 0;
-                    bricks = gameView.createMatrix(0);
-                    lvlComplete.dismiss();
+                    setLevel(0);
                     break;
             }
+            lvlComplete.dismiss();
         }
     }
+
+    void setLevel(int n){
+        level += n;
+        switch(level){
+            case 1:
+                levels.setLevel_1();
+                bricks = levels.getLevel_1();
+                gameView.createMatrix(bricks);
+                break;
+            case 2:
+                levels.setLevel_2();
+                bricks = levels.getLevel_2();
+                gameView.createMatrix(bricks);
+                break;
+            case 3:
+                levels.setLevel_3();
+                bricks = levels.getLevel_3();
+                gameView.createMatrix(bricks);
+                break;
+            case 4:
+                levels.setLevel_4();
+                bricks = levels.getLevel_4();
+                gameView.createMatrix(bricks);
+                break;
+            case 5:
+                levels.setLevel_5();
+                bricks = levels.getLevel_5();
+                gameView.createMatrix(bricks);
+                break;
+        }
+
+    }
+
+    void gameOver(){
+
+
+        bricks = levels.getLevel_1();
+        gameView.createMatrix(bricks);
+    }
+
 
 }
 
@@ -375,160 +422,3 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
-//...........................................................................................//
-
-//Old on Create Code
-/*platform = findViewById(R.id.platform_iv);
-        leftBorder = findViewById(R.id.left_border_tv);
-        rightBorder = findViewById(R.id.right_border_tv);
-        topBorder = findViewById(R.id.top_border_tv);
-        bottomBorder = findViewById(R.id.bottom_brder_tv);
-        ball = findViewById(R.id.ball_iv);
-
-
-       // GameView gameView;
-        gameView = findViewById(R.id.game_view);
-        //bricks = new Rect[100];
-        bricks = gameView.createMatrix(5, 5);
-
-
-
-
-
-
-        leftBorderRect.set(leftBorder.getLeft() ,leftBorder.getTop() , leftBorder.getRight() , leftBorder.getBottom());
-        rightBorderRect.set(rightBorder.getLeft() , rightBorder.getTop() , rightBorder.getRight() , rightBorder.getBottom());
-        topBorderRect.set(topBorder.getLeft(), topBorder.getTop(),topBorder.getRight(),topBorder.getBottom());
-        bottomBorderRect.set(bottomBorder.getLeft(),bottomBorder.getTop(),bottomBorder.getRight(),bottomBorder.getBottom());
-        platformRectL.set(platform.getLeft() , platform.getTop(),platform.getWidth()/2,platform.getBottom());
-        platformRectR.set(platform.getWidth()/2,platform.getTop(),platform.getRight(),platform.getBottom());
-
-        ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());*/
-
-//..................................................................................................................//
-
-
-//Old Sensor Change Code
-/*{
-
-
-
-
-            ballRect.set(ball.getLeft() , ball.getTop() , ball.getRight() , ball.getBottom());
-
-
-            newX = 5 * event.values[0];
-
-            ball.getHitRect(ballRect);
-            platform.getHitRect(platformRectR);
-            platform.getHitRect(platformRectL);
-            leftBorder.getHitRect( leftBorderRect);
-            rightBorder.getHitRect(rightBorderRect);
-            topBorder.getHitRect(topBorderRect);
-            bottomBorder.getHitRect(bottomBorderRect);
-
-
-
-            ball.setX(ball.getX() + ballMovementX);
-            ball.setY(ball.getY() + ballMovementY);
-
-
-
-            //ball movement
-            if(Rect.intersects(ballRect , rightBorderRect)){
-
-                //ball.setX(ball.getX());
-                ballMovementX = -ballMovementX;
-                ball.setX(ball.getX() - 4*ballMovementX);
-                //ball.setY(ball.getY() - 50);
-
-            }
-
-            if( Rect.intersects(ballRect,leftBorderRect)){
-                ballMovementX = -ballMovementX;
-                ball.setX(ball.getX() + 4*ballMovementX);
-            }
-
-
-            if(Rect.intersects(platformRectR,ballRect)){
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() - 50);
-                if(ballMovementX < 0) {
-                    ballMovementX = -ballMovementX;
-                    //ball.setX(ball.getX() + 50);
-                }
-
-            }
-            if(Rect.intersects(platformRectL,ballRect)){
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() - 50);
-                if(ballMovementX > 0) {
-                    ballMovementX = -ballMovementX;
-                    //ball.setX(ball.getX() - 50);
-                }
-
-            }
-
-            if(Rect.intersects(ballRect, topBorderRect)){
-                ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() + 50);
-            }
-
-            if(Rect.intersects(ballRect,bottomBorderRect)){
-                *//*ballMovementY = -1 * ballMovementY;
-                ball.setY(ball.getY() - 50);*//*
-                gameView.loseLife();
-            }
-
-            else {
-                for(Rect brick:bricks){
-                    indexOfBrick++;
-                    if (Rect.intersects(ballRect, brick)) {
-                        //If ball is above brick
-                        if(ballRect.exactCenterY() > brick.exactCenterY()) {
-                            ballMovementY = -ballMovementY;
-                            ball.setY(ball.getY() + ballMovementY);
-                            //ball.setY(ball.getY());
-
-                        }
-                        //If ball is below brick
-                        if(ballRect.exactCenterY() < brick.exactCenterY()){
-                            ballMovementY = -ballMovementY;
-                            ball.setY(ball.getY() + ballMovementY);
-                        }
-
-                        //If ball hits brick from the right
-                        if(ball.getX() > brick.exactCenterX()){
-                            ballMovementX = -ballMovementX;
-                            ball.setX(ball.getX() + ballMovementX);
-                        }
-
-                        //If ball hits brick from the left
-                        if(ballRect.exactCenterX() < brick.exactCenterX()){
-                            ballMovementX = -ballMovementX;
-                            ball.setX(ball.getX() + ballMovementX);
-                        }
-                        gameView.delete(brick ,indexOfBrick);
-                        brick.set(0, 0, 0, 0);
-                        indexOfBrick = 0;
-                    }
-                }
-
-            }
-
-
-            //platform movement
-            float platformX = platform.getX();
-
-
-            if( (Rect.intersects(platformRectL,leftBorderRect)) && newX > 0)
-                platform.setX( platformX);
-            else if(Rect.intersects(platformRectR,rightBorderRect) && newX < 0){
-                platform.setX( platformX);
-            }
-
-            else
-                platform.setX( platformX - newX);
-        }*/
-//try to fix
-//...............................................................................................//
