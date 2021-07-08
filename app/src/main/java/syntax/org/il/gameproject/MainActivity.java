@@ -1,9 +1,11 @@
 package syntax.org.il.gameproject;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -12,9 +14,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,9 +36,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Rect platformRectR  =new Rect() , platformRectL = new Rect();*/
 
 
+    //Defining all the Variables
     SensorManager sensorManger;
     private Sensor sensorAccel;
-    float ballMovementX, ballMovementY,speedx,speedY;
+    float ballMovementX, ballMovementY, speedx, speedY;
     int platMovementX;
     int scale;
     GameView gameView;
@@ -48,16 +54,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean up = true;
     boolean right = true;
     boolean startGame = false;
-    int screenX , screenY;
+    int screenX, screenY;
     Display display;
     Point size = new Point();
+    int bricksDestroyed = 0;
+    Handler handler = new Handler();
+    View dialogView;
+    AlertDialog.Builder builder;
+    AlertDialog lvlComplete;
 
 
-
-
-
-
-
+    boolean paused = false;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -67,18 +74,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
 
-
-        scale  = (int)getResources().getDisplayMetrics().density;
-        angle = (float)Math.PI;
-        angleX = (float)(Math.cos(angle/18));
-        angleY = (float)(Math.sin(angle/18));
-        speedx = 7*scale;
-        speedY = 7*scale;
+        scale = (int) getResources().getDisplayMetrics().density;
+        angle = (float) Math.PI;
+        angleX = (float) (Math.cos(angle / 18));
+        angleY = (float) (Math.sin(angle / 18));
+        speedx = 7 * scale;
+        speedY = 7 * scale;
         ballMovementX = speedx;
         ballMovementY = speedY;
-
-
-
 
 
         gameView = (GameView) findViewById(R.id.game_view);
@@ -87,18 +90,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         screenX = size.x;
         screenY = size.y;
 
-        bricks = gameView.createMatrix(5, 5);
+        bricks = gameView.createMatrix(1);
         //gameBall = gameView.createCircle(180*scale,500*scale,4*scale);
         //platform = gameView.createPlatform(200*scale,545*scale,270*scale,555*scale);
-        platform = gameView.createPlatform((screenX/2),(screenY - 50*scale),(screenX/2 +50*scale),(screenY-40*scale));
-        gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight()-platform.getLeft())/2 , platform.getTop()- 20*scale , 4*scale);
-        gameView.setBorders(screenX,screenY);
+        platform = gameView.createPlatform((screenX / 2), (screenY - 50 * scale), (screenX / 2 + 50 * scale), (screenY - 40 * scale));
+        gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
+        gameView.setBorders(screenX, screenY);
         //borders = gameView.getBorder(borders);
         //brickBoxes = new Rect[bricks.length];
-
-
-
-
 
 
         sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -112,66 +111,64 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
 
 
+        if(!paused){
         //Platform Movement
 
-            platMovementX = 5 * (int) (event.values[0] * scale);
-            if (platform.getLeft() > 0 && platMovementX > 0) {
-                gameView.movePlatform(platform, platMovementX);
-                if(!startGame) {
-                    gameView.moveCircle(gameBall, -platMovementX, 0);
-                }
+        platMovementX = 5 * (int) (event.values[0] * scale);
+        if (platform.getLeft() > 0 && platMovementX > 0) {
+            gameView.movePlatform(platform, platMovementX);
+            if (!startGame) {
+                gameView.moveCircle(gameBall, -platMovementX, 0);
             }
+        }
 
-            if (platform.getRight() < 350 * scale && platMovementX < 0) {
-                gameView.movePlatform(platform, platMovementX);
-                if(!startGame) {
-                    gameView.moveCircle(gameBall, -platMovementX, 0);
-                }
+        if (platform.getRight() < 350 * scale && platMovementX < 0) {
+            gameView.movePlatform(platform, platMovementX);
+            if (!startGame) {
+                gameView.moveCircle(gameBall, -platMovementX, 0);
             }
+        }
 
 
-        if(startGame) {
+        if (startGame) {
             gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
 
             //Ball Movement
             //Hits left side
             if (gameBall.getCenterX() < 0) {
                 right = true;
-                if(up){
+                if (up) {
                     setAngles(1);
-                    ballMovementY = -1*speedY * angleY;
-                }
-                else if(!up){
+                    ballMovementY = -1 * speedY * angleY;
+                } else if (!up) {
                     setAngles(3);
-                    ballMovementY = -1*speedY * angleY;
+                    ballMovementY = -1 * speedY * angleY;
                 }
                 ballMovementX = speedx * angleX;
             }
             //Hits top
             if (gameBall.getCenterY() < 0) {
                 up = false;
-                if(right){
+                if (right) {
                     setAngles(3);
-                }
-                else if(!right){
+                } else if (!right) {
                     setAngles(4);
                 }
                 ballMovementX = speedx * angleX;
-                ballMovementY =-1* speedY * angleY;
+                ballMovementY = -1 * speedY * angleY;
             }
             //Hits right side
             if (gameBall.getCenterX() > screenX) {
                 right = false;
-                if(up) {
+                if (up) {
                     setAngles(2);
-                    ballMovementY = -1*speedY * angleY;
-                }
-                else if(!up){
+                    ballMovementY = -1 * speedY * angleY;
+                } else if (!up) {
                     setAngles(4);
-                    ballMovementY = -1*speedY * angleY;
+                    ballMovementY = -1 * speedY * angleY;
                 }
                 ballMovementX = speedx * angleX;
-                if(ballMovementX>0){
+                if (ballMovementX > 0) {
                     ballMovementX = -ballMovementX;
                 }
             }
@@ -180,42 +177,49 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (gameBall.getCenterY() > screenY) {
                 //ballMovementY = -ballMovementY;
                 gameView.loseLife();
-                gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight()-platform.getLeft())/2 , platform.getTop()- 20*scale , 4*scale);                startGame = false;
+                gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
+                startGame = false;
                 ballMovementX = speedx;
                 ballMovementY = speedY;
             }
 
             if (gameBall.hitsPlatform(platform) == 1) {
                 up = true;
-                if(right){
+                if (right) {
                     setAngles(1);
 
-                }
-                else if(!right){
+                } else if (!right) {
                     setAngles(2);
                 }
                 ballMovementX = speedx * angleX;
-                ballMovementY =-1* speedY * angleY;
+                ballMovementY = -1 * speedY * angleY;
             }
 
             for (Brick brick : bricks) {
                 if (gameBall.hitsBrick(brick)) {
+                    bricksDestroyed++;
                     up = !up;
                     right = !right;
                     ballMovementX = -ballMovementX;
                     ballMovementY = -ballMovementY;
-                    brick.set(0,0,0,0,0);
+                    brick.set(0, 0, 0, 0, 0);
                     //brick.setRectF();
-                    bricks = gameView.deleteBrick(bricks , brick);
+                    bricks = gameView.deleteBrick(bricks, brick);
                     break;
                     //index = 0;
                 }
+            }
+            if (bricks.length == bricksDestroyed) {
+                paused = true;
+                levelUp();
             }
 
         }
 
 
     }
+
+}
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -322,6 +326,48 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angleY = (float)(Math.sin(angle));
     }
 
+    void levelUp(){
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                builder = new AlertDialog.Builder(MainActivity.this,R.style.Theme_AppCompat_Dialog_Alert);
+                dialogView = getLayoutInflater().inflate(R.layout.level_complete,null);
+                Button nextLvlBtn = dialogView.findViewById(R.id.next_level);
+                Button restartLvlBtn = dialogView.findViewById(R.id.restart_level);
+                builder.setView(dialogView).setCancelable(false);
+                lvlComplete = builder.create();
+                lvlComplete.show();
+
+
+                nextLvlBtn.setOnClickListener(new AlertDialogsOnClickListener());
+                restartLvlBtn.setOnClickListener(new AlertDialogsOnClickListener());
+            }
+        });
+
+    }
+
+    public class AlertDialogsOnClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
+            paused = false;
+            startGame = false;
+            switch(v.getId()){
+                case R.id.next_level:
+                    bricksDestroyed = 0;
+                    bricks = gameView.createMatrix(1);
+                    lvlComplete.dismiss();
+                    break;
+                case R.id.restart_level:
+                    bricksDestroyed = 0;
+                    bricks = gameView.createMatrix(0);
+                    lvlComplete.dismiss();
+                    break;
+            }
+        }
+    }
 
 }
 

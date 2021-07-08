@@ -13,7 +13,7 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 
 
-public class GameView extends TextView {
+public class GameView extends SurfaceView {
 
     float StartX ,startY , endX , endY;
     Paint paint;
@@ -34,6 +34,8 @@ public class GameView extends TextView {
     Brick deleteBr = new Brick(0,0,0,0 , 0);
     Ball ball;
     Brick platform;
+    Levels levels;
+    int level = 0;
 
 
 
@@ -74,12 +76,8 @@ public class GameView extends TextView {
         bluePaint.setStyle(Paint.Style.FILL);
         bluePaint.setColor(Color.BLUE);
 
-        //Borders
-
-        /*borderRight.set(357*scale , 0 , 358*scale , 600*scale);
-        borderLeft.set(0 , 0 , 3*scale , 600*scale);
-        borderTop.set(0 , 0 , 400*scale , 1*scale);
-        borderBottom.set(0*scale , 559*scale , 400*scale , 560*scale);*/
+        //Creating Levels instance
+        levels = new Levels(scale);
 
         //Life
         heart.moveTo(25f* scale, 5f * scale);
@@ -119,7 +117,7 @@ public class GameView extends TextView {
     protected void onDraw(Canvas canvas ) {
         super.onDraw(canvas);
 
-        for(int i = 0 ; i<Row * Colum ; i++){
+        for(int i = 0 ; i<bricks.length ; i++){
 
             if(bricks[i].getHit() == 1 ) {
                 canvas.drawRect(bricks[i].getLeft(), bricks[i].getTop(), bricks[i].getRight(), bricks[i].getBottom(), paint);
@@ -132,7 +130,7 @@ public class GameView extends TextView {
         canvas.drawCircle(ball.getCenterX() , ball.getCenterY(), ball.getRadius(),bluePaint);
         canvas.drawRect(platform.getLeft() ,platform.getTop(),platform.getRight(),platform.getBottom(),paint);
 
-       // canvas.drawPath(heart , paint);
+        // canvas.drawPath(heart , paint);
         //canvas.drawPath(heart,stroke);
 
         canvas.drawRect(borderRight , paint);
@@ -164,29 +162,22 @@ public class GameView extends TextView {
 
 
 
-    Brick[] createMatrix(int row , int colum){
-        //matrix = new Rect[row][colum];
-        Row = 5;
-        Colum = 5;
-        bricks = new Brick[Row*Colum];
-        for(int i = 0; i<Row;i++){
-            heightCahnge += 30;
-            // heightCahnge += 8;
-            widthChange = 0;
-            for(int j = 0; j<Colum; j++){
-                //matrix[i][j] = new Rect();
+    Brick[] createMatrix(int n) {
 
-                //matrix[i][j].set(scale*(50+widthChange) , scale*(30 + heightCahnge ),  scale*(100 + widthChange),  scale*(60 + heightCahnge) );
-                bricks[bricksCount] = new Brick(scale*(50+widthChange) , scale*(30 + heightCahnge ),  scale*(100 + widthChange),  scale*(60 + heightCahnge) , 1 );
-                // bricks[bricksCount] = new Brick(scale*(10+widthChange) , scale*(6 + heightCahnge ),  scale*(20 + widthChange),  scale*(12 + heightCahnge) );
-                bricksCount++;
-                //canvas.drawRect(matrix[i][j] , paint);
-                widthChange +=50;
-                //widthChange +=12;
-            }
+        level += n;
+        switch (level) {
+            case 1:
+                levels.setLevel_1();
+                bricks = levels.getLevel_1();
+                break;
+            case 2:
+                levels.setLevel_2();
+                bricks = levels.getLevel_2();
+                break;
         }
         invalidate();
         return bricks;
+
     }
 
     public Brick[] deleteBrick(Brick[] B, Brick b){
@@ -243,7 +234,7 @@ public class GameView extends TextView {
         borderRight.set((screenX - 1), 0, screenX , screenY);
         borderLeft.set(0, 0, 3 , screenY );
         borderTop.set(0, 0, screenX , 1 );
-        borderBottom.set(0 * scale, (screenY-1) , screenX , screenY );
+        borderBottom.set(0 , (screenY-1) , screenX , screenY );
     }
 
 
