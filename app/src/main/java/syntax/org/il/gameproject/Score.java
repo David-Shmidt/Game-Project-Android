@@ -1,9 +1,14 @@
 package syntax.org.il.gameproject;
 
-public class Score {
+public class Score implements Comparable<Score> {
     private String name;
     private int score;
     private int trophyId;
+
+    public Score(String name, int score) {
+        this.name = name;
+        this.score = score;
+    }
 
     public int getTrophyId() {
         return trophyId;
@@ -11,11 +16,6 @@ public class Score {
 
     public void setTrophyId(int trophyId) {
         this.trophyId = trophyId;
-    }
-
-    public Score(String name, int score) {
-        this.name = name;
-        this.score = score;
     }
 
     public String getName() {
@@ -33,4 +33,10 @@ public class Score {
     public void setScore(int score) {
         this.score = score;
     }
+
+    @Override
+    public int compareTo(Score o) {
+        return this.score - o.score;
+    }
+
 }
