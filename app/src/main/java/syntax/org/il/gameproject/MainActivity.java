@@ -18,6 +18,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     //ImageView platform , ball;
@@ -55,12 +56,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Point size = new Point();
     int bricksDestroyed = 0;
     Handler handler = new Handler();
-    View dialogView;
-    AlertDialog.Builder builder;
+    /*View dialogView;
+    AlertDialog.Builder builder;*/
     AlertDialog lvlComplete;
+    AlertDialog gameOver;
     int lives = 3;
     Levels levels;
     int level = 1;
+    EditText nameEt;
 
 
     boolean paused = false;
@@ -338,8 +341,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         handler.post(new Runnable() {
             @Override
             public void run() {
-                builder = new AlertDialog.Builder(MainActivity.this,R.style.Theme_AppCompat_Dialog_Alert);
-                dialogView = getLayoutInflater().inflate(R.layout.level_complete,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.Theme_AppCompat_Dialog_Alert);
+                View dialogView = getLayoutInflater().inflate(R.layout.level_complete,null);
                 Button nextLvlBtn = dialogView.findViewById(R.id.next_level);
                 Button restartLvlBtn = dialogView.findViewById(R.id.restart_level);
                 builder.setView(dialogView).setCancelable(false);
@@ -353,6 +356,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
 
     }
+
+    void gameOver(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
+                View dialogView = getLayoutInflater().inflate(R.layout.game_over,null);
+                Button  submitBtn = dialogView.findViewById(R.id.submit_name_btn);
+                nameEt = dialogView.findViewById(R.id.player_name_et);
+                builder.setView(dialogView).setCancelable(false);
+                gameOver = builder.create();
+                gameOver.show();
+                submitBtn.setOnClickListener(new AlertDialogsOnClickListener());
+
+            }
+        });
+
+
+        bricks = levels.getLevel_1();
+        gameView.createMatrix(bricks);
+    }
+
 
     //Click Listener Class for Dialogs Buttons
     public class AlertDialogsOnClickListener implements View.OnClickListener{
@@ -371,8 +396,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 case R.id.restart_level:
                     setLevel(0);
                     break;
+                case R.id.submit_name_btn:
+                    String name;
+                    name = nameEt.getText().toString();
+                    gameOver.dismiss();
+                    break;
             }
             lvlComplete.dismiss();
+
         }
     }
 
@@ -408,12 +439,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    void gameOver(){
 
-
-        bricks = levels.getLevel_1();
-        gameView.createMatrix(bricks);
-    }
 
 
 }
