@@ -9,87 +9,20 @@
 
 
 
-
-    <!--<ImageView
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/platform"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:id="@+id/platform_iv"/>
-
-    <ImageView
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ball"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:id="@+id/ball_iv"/>
-
-
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/left_border_tv"/>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:id="@+id/right_border_tv"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/black"
-        android:id="@+id/top_border_tv"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/black"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/bottom_brder_tv"/>-->
-
     <syntax.org.il.gameproject.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/backround_main_activity"/>
 
-
-
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ball X Location: "
-        android:layout_centerVertical="true"
-        android:id="@+id/x_location"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ball Y location:"
-        android:layout_below="@+id/x_location"
-        android:id="@+id/y_location"/>-->
-
-
-
-
- <!--   <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X:"
-        android:id="@+id/X_change"/>-->
-
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/backround_main_activity"
+        android:src="@drawable/pause_v"
+        android:id="@+id/pause_btn"/>
 </RelativeLayout>
 
 
