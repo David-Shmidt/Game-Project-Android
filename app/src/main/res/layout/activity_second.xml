@@ -7,8 +7,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back_btn"
-        android:id="@+id/backbtn"
+        android:id="@+id/back_btn"
         android:backgroundTint="@drawable/shape_playbtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        android:id="@+id/submit_btn"
+        android:backgroundTint="@drawable/shape_playbtn"
+        android:layout_below="@id/back_btn"/>
 
 
     <ImageView
