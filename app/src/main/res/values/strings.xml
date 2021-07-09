@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Game Project</string>
-    <string name="name">Name</string>
+    <string name="user_name">Enter name</string>
     <string name="play_btn">Play!</string>
     <string name="score_btn">Score</string>
     <string name="back_btn">Back</string>
+    <string name="usernameToast">user name:</string>
+    <string name="Fieldcantbeempty">Field cant be empty</string>
+    <string name="Usernametolong">User name to long</string>
 </resources>

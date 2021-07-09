@@ -11,16 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 public class StartActivity extends AppCompatActivity {
 
     //Play Button
-    private Button button;
+    private Button playBtn;
+    private TextInputLayout textInputUsername;
     ImageView Title;
     SharedPreferences sp;
 
@@ -30,18 +33,31 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        TextInputEditText username;
-        //need to get a name from MD
-       // username = findViewById(R.id.textInputEdit);
+
+
         //share preferences
+        textInputUsername = findViewById(R.id.textInputLayout);
         sp = getSharedPreferences("details",MODE_PRIVATE);
 
         //Play button
-        button = findViewById(R.id.play_btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        playBtn = findViewById(R.id.play_btn);
+        playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMainActivity();
+                String username = textInputUsername.getEditText().getText().toString().trim();
+                String input = getResources().getString(R.string.usernameToast) + textInputUsername.getEditText().getText().toString();
+                //username
+                if (username.isEmpty()) {
+                    textInputUsername.setError(getResources().getString(R.string.Fieldcantbeempty));
+                    Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
+                } else if (username.length() > 20) {
+                    textInputUsername.setError(getResources().getString(R.string.Usernametolong));
+                    Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
+                } else {
+                    textInputUsername.setError(null);
+                    Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -68,11 +84,6 @@ public class StartActivity extends AppCompatActivity {
         objectAnimator.start(); //end of write for animation title
     }
 
-    //Play button - Intent
-    public void openMainActivity() {
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     protected void onPause() {
@@ -81,8 +92,7 @@ public class StartActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor =sp.edit();
         //cant use gettext()
-       // editor.putString("user_name",username.getText().toString());
+        editor.putString("user_name",getResources().getString(R.string.user_name));
         editor.commit();
     }
 }
-//try to fix

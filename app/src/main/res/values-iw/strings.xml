@@ -5,4 +5,6 @@
     <string name="play_btn">שחק!</string>
     <string name="score_btn">ניקוד</string>
     <string name="back_btn">חזרה</string>
+    <string name="user_name">הכנס שם</string>
+    <string name="usernameToast">שם משתמש:</string>
 </resources>
