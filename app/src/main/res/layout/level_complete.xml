@@ -38,7 +38,8 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/restart_level"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/level_complete_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/level_complete_tv"
+        app:shapeAppearanceOverlay="@style/leaf"/>
 
     <Button
         android:id="@+id/restart_level"
@@ -54,7 +55,8 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/next_level"
-        app:layout_constraintTop_toBottomOf="@+id/level_complete_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/level_complete_tv"
+        app:shapeAppearanceOverlay="@style/leaf"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
