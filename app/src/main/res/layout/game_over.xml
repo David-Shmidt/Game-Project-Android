@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/backround_main_activity"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Game Over"
+        android:textSize="30sp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/purple"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Enter Player Name"
+        android:textColorHint="@color/purple"
+        android:textSize="20sp"
+        android:textColor="@color/purple"
+        android:gravity="center_horizontal"
+        android:id="@+id/player_name_et"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textSize="20sp"
+        android:backgroundTint="@color/purple"
+        android:id="@+id/submit_name_btn"/>
+</LinearLayout>
