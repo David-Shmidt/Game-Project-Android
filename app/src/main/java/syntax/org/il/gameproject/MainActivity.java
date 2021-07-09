@@ -363,12 +363,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void run() {
                 AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.game_over,null);
-                Button  submitBtn = dialogView.findViewById(R.id.submit_name_btn);
-                nameEt = dialogView.findViewById(R.id.player_name_et);
+                Button finishBtn = dialogView.findViewById(R.id.finish_name_btn);
+               // nameEt = dialogView.findViewById(R.id.name);
                 builder.setView(dialogView).setCancelable(false);
                 gameOver = builder.create();
                 gameOver.show();
-                submitBtn.setOnClickListener(new AlertDialogsOnClickListener());
+                finishBtn.setOnClickListener(new AlertDialogsOnClickListener());
 
             }
         });
@@ -396,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 case R.id.restart_level:
                     setLevel(0);
                     break;
-                case R.id.submit_name_btn:
+                case R.id.finish_name_btn:
                     String name;
                     name = nameEt.getText().toString();
                     gameOver.dismiss();
