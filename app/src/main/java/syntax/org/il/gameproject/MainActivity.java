@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int level = 1;
     EditText nameEt;
     ImageButton pauseBtn;
+    int score = 0;
 
 
     boolean paused = false;
@@ -216,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //Checks if Ball intecects Bricks
             for (Brick brick : bricks) {
                 if (gameBall.hitsBrick(brick)) {
+                    scoreControl(100);
                     bricksDestroyed++;
                     up = !up;
                     right = !right;
@@ -249,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //The ball wint move untill the screen is pressed
+        //The ball wont move until the screen is pressed
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
             startGame = true;
@@ -276,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    //Setting diffrent angles for different directions
+    //Setting different angles for different directions
     float upRightAngle(){
         int n =  (int)(Math.random() *3) +1;
         switch (n){
@@ -389,8 +391,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
 
 
-        bricks = levels.getLevel_1();
-        gameView.createMatrix(bricks);
+       // bricks = levels.getLevel_1();
+        //gameView.createMatrix(bricks);
     }
 
 
@@ -418,6 +420,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     break;
                 case R.id.play_again:
                     level = 0;
+                    lives  = 3;
+                    gameView.setLives();
                     setLevel(1);
                     gameOver.dismiss();
                     break;
@@ -455,6 +459,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
         }
 
+    }
+
+    void scoreControl(int n){
+        n *= lives;
+        score += n;
+        gameView.setScore(score);
     }
 
 
