@@ -19,7 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     //ImageView platform , ball;
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Levels levels;
     int level = 1;
     EditText nameEt;
-    ImageButton pauseBtn;
 
 
     boolean paused = false;
@@ -105,20 +103,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        pauseBtn = findViewById(R.id.pause_btn);
-        pauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!paused){
-                    pauseBtn.setImageResource(R.drawable.play_v);
-                    paused = true;
-                }
-                else if(paused){
-                    pauseBtn.setImageResource(R.drawable.pause_v);
-                    paused = false;
-                }
-            }
-        });
 
     }
 
@@ -423,8 +407,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     gameOver.dismiss();
                     break;
             }
-
-
         }
     }
 
