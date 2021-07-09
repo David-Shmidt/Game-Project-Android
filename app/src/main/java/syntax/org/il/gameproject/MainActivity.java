@@ -4,7 +4,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int lives = 3;
     Levels levels;
     int level = 1;
-    EditText nameEt;
+    SharedPreferences sp = getSharedPreferences("details",MODE_PRIVATE);
 
 
     boolean paused = false;
@@ -399,6 +401,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     lvlComplete.dismiss();
                     break;
                 case R.id.finish_name_btn:
+                    String name = sp.getString("user_name",null);
+                    int score = 5;
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("name",name);
+                    contentValues.put("score",score);
+                    database.insert(TABLE_NAME,null,contentValues);
                     gameOver.dismiss();
                     break;
                 case R.id.play_again:
