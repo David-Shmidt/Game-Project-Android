@@ -91,8 +91,9 @@ public class StartActivity extends AppCompatActivity {
 
 
         SharedPreferences.Editor editor =sp.edit();
-        //cant use gettext()
-        editor.putString("user_name",getResources().getString(R.string.user_name));
+        //
+        editor.putString("user_name",textInputUsername.getEditText().getText().toString());
+        editor.putInt("score",0);
         editor.commit();
     }
 }
