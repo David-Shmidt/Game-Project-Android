@@ -364,12 +364,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.game_over,null);
                 Button finishBtn = dialogView.findViewById(R.id.finish_name_btn);
-               // nameEt = dialogView.findViewById(R.id.name);
+                Button playagainBtn = dialogView.findViewById(R.id.play_again);
                 builder.setView(dialogView).setCancelable(false);
                 gameOver = builder.create();
                 gameOver.show();
                 finishBtn.setOnClickListener(new AlertDialogsOnClickListener());
-
+                playagainBtn.setOnClickListener(new AlertDialogsOnClickListener());
             }
         });
 
@@ -392,18 +392,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             switch(v.getId()){
                 case R.id.next_level:
                     setLevel(1);
+                    lvlComplete.dismiss();
                     break;
                 case R.id.restart_level:
                     setLevel(0);
+                    lvlComplete.dismiss();
                     break;
                 case R.id.finish_name_btn:
-                    String name;
-                    name = nameEt.getText().toString();
+                    gameOver.dismiss();
+                    break;
+                case R.id.play_again:
+                    level = 0;
+                    setLevel(1);
                     gameOver.dismiss();
                     break;
             }
-            lvlComplete.dismiss();
-
         }
     }
 
