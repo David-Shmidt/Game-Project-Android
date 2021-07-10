@@ -457,6 +457,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 case R.id.play_again:
                     level = 0;
                     lives  = 3;
+                    gameView.setScore(0);
                     gameView.setLives();
                     setLevel(1);
                     gameOver.dismiss();
@@ -509,6 +510,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         soundPool.release();
         soundPool = null;
     }
+
+    //back press on phone exit!!!
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
 }
 
 
