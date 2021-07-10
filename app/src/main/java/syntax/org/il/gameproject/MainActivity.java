@@ -5,12 +5,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,13 +75,35 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     boolean paused = false;
-
+    private SoundPool soundPool;
+    private int sound1,sound2,sound3,sound4,sound5,sound6;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //sound
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(6)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+            }else {
+                soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC,0);
+        }
+
+        sound1 = soundPool.load(this,R.raw.brickhit,1);
+        sound2 = soundPool.load(this,R.raw.mphitplatform,1);
+        sound3 = soundPool.load(this,R.raw.mphitsidewall,1);
+        sound4 = soundPool.load(this,R.raw.mphitbottom,1);
+        sound5 = soundPool.load(this,R.raw.mpgameover,1);
+        sound6 = soundPool.load(this,R.raw.mplevelcomplete,1);
 
 
         scale = (int) getResources().getDisplayMetrics().density;
@@ -152,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //Ball Movement
             //Hits left side
             if (gameBall.getCenterX() < 0) {
+                soundPool.play(sound3,1,1,0,0,1);
                 right = true;
                 if (up) {
                     setAngles(1);
@@ -164,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
             //Hits top
             if (gameBall.getCenterY() < 0) {
+                soundPool.play(sound3,1,1,0,0,1);
                 up = false;
                 if (right) {
                     setAngles(3);
@@ -175,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
             //Hits right side
             if (gameBall.getCenterX() > screenX) {
+                soundPool.play(sound3,1,1,0,0,1);
                 right = false;
                 if (up) {
                     setAngles(2);
@@ -191,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             //Hits Bottom and Loses life
             if (gameBall.getCenterY() > screenY) {
+                soundPool.play(sound4,1,1,0,0,1);
                 lives--;
                 gameView.loseLife();
                 gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
@@ -198,11 +229,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 ballMovementX = 0;
                 ballMovementY = -speedY;
                 if(lives == 0){
+                    soundPool.play(sound5,1,1,0,0,1);
                     gameOver();
                 }
             }
 
             if (gameBall.hitsPlatform(platform) == 1) {
+                soundPool.play(sound2,1,1,0,0,1);
                 up = true;
                 if (right) {
                     setAngles(1);
@@ -217,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //Checks if Ball intecects Bricks
             for (Brick brick : bricks) {
                 if (gameBall.hitsBrick(brick)) {
+                    soundPool.play(sound1,1,1,0,0,1);
                     scoreControl(100);
                     bricksDestroyed++;
                     up = !up;
@@ -233,13 +267,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //If all Bricks are Destroyed pop Alert Dialog
             //Also pause the game
             if (bricks.length == bricksDestroyed) {
+                soundPool.play(sound6,1,1,0,0,1);
                 paused = true;
                 levelUp();
             }
 
         }
-
-
     }
 
 }
@@ -416,6 +449,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     lvlComplete.dismiss();
                     break;
                 case R.id.finish_name_btn:
+                    Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                    startActivity(intent);
                     gameOver.dismiss();
                     break;
                 case R.id.play_again:
@@ -467,9 +502,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         gameView.setScore(score);
     }
 
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        soundPool.release();
+        soundPool = null;
+    }
 }
 
 
