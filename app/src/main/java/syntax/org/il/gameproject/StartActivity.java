@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ public class StartActivity extends AppCompatActivity {
     //Play Button
     private Button playBtn;
     private TextInputLayout textInputUsername;
+    private MediaPlayer mediaPlayer;
     ImageView Title;
     SharedPreferences sp;
 
@@ -33,6 +35,11 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        //backround music
+        mediaPlayer = MediaPlayer.create(StartActivity.this,R.raw.backroundsound);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
 
 
         //share preferences
@@ -84,10 +91,16 @@ public class StartActivity extends AppCompatActivity {
         objectAnimator.start(); //end of write for animation title
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mediaPlayer.start();
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mediaPlayer.pause();
 
 
         SharedPreferences.Editor editor =sp.edit();
@@ -95,5 +108,12 @@ public class StartActivity extends AppCompatActivity {
         editor.putString("user_name",textInputUsername.getEditText().getText().toString());
         editor.putInt("score",0);
         editor.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 }
