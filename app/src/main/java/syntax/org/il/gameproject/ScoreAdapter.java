@@ -26,14 +26,12 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
 
        TextView nameTv;
        TextView scoreTv;
-       ImageView trophyIv;
 
        public ScoreViewHolder(@NonNull View itemView) {
            super(itemView);
 
            nameTv = itemView.findViewById(R.id.username);
            scoreTv = itemView.findViewById(R.id.score);
-           trophyIv = itemView.findViewById(R.id.trophy);
 
        }
    }
@@ -52,7 +50,6 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
         Score score = scores.get(position);
         holder.nameTv.setText(score.getName());
         holder.scoreTv.setText(score.getScore()+"");
-        holder.trophyIv.setImageResource(score.getTrophyId());
     }
 
     @Override

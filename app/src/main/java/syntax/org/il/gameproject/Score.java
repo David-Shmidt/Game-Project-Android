@@ -3,20 +3,12 @@ package syntax.org.il.gameproject;
 public class Score implements Comparable<Score> {
     private String name;
     private int score;
-    private int trophyId;
 
     public Score(String name, int score) {
         this.name = name;
         this.score = score;
     }
 
-    public int getTrophyId() {
-        return trophyId;
-    }
-
-    public void setTrophyId(int trophyId) {
-        this.trophyId = trophyId;
-    }
 
     public String getName() {
         return name;

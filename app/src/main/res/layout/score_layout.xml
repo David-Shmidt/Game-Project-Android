@@ -7,19 +7,14 @@
     app:contentPadding="10dp"
     android:elevation="10dp">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/golden_trophy"
-        android:layout_gravity="start"
-        android:layout_margin="10dp"
-        android:id="@+id/trophy"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center">
+        android:layout_gravity="start"
+        android:layout_margin="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,6 +32,6 @@
         android:text="Score"
         android:id="@+id/score"
         android:layout_gravity="end|center"
-        android:layout_marginEnd="50dp"/>
+        android:layout_marginEnd="70dp"/>
 
 </androidx.cardview.widget.CardView>

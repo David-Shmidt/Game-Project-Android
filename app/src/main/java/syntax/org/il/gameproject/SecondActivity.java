@@ -22,10 +22,9 @@ import java.util.List;
 
 public class SecondActivity extends AppCompatActivity {
 
+    //creating a table +data base for sql
     final String TABLE_NAME = "Score_table";
-
     final String CREATE_TABLE_CMD ="CREATE TABLE IF NOT EXISTS " + TABLE_NAME +"(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,score INTEGER);";
-
     SQLiteDatabase database;
 
     @Override
@@ -35,8 +34,8 @@ public class SecondActivity extends AppCompatActivity {
 
         database = openOrCreateDatabase("database.sql",MODE_PRIVATE,null);
         database.execSQL(CREATE_TABLE_CMD);
+        //score from wher you finished the game
         int score = getIntent().getIntExtra("score",0);
-        //int score = 0;
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -44,6 +43,7 @@ public class SecondActivity extends AppCompatActivity {
         ScoreAdapter scoreAdapter = new ScoreAdapter(scores);
         recyclerView.setAdapter(scoreAdapter);
         SharedPreferences sp = getSharedPreferences("details",MODE_PRIVATE);
+        //add your score only if click finish you have score>0
         if (score > 0) {
             String name = sp.getString("user_name", null);
 
@@ -53,7 +53,7 @@ public class SecondActivity extends AppCompatActivity {
             database.insert(TABLE_NAME, null, contentValues);
             scoreAdapter.notifyDataSetChanged();
         }
-
+        //show total scores
         Cursor cursor = database.query(TABLE_NAME,null,null,null,null,null,null);
         int NameIndex = cursor.getColumnIndex("name");
         int ScoreIndex = cursor.getColumnIndex("score");
@@ -64,15 +64,17 @@ public class SecondActivity extends AppCompatActivity {
         scoreAdapter.notifyDataSetChanged();
         Collections.sort(scores);
 
-
-        //scores.add(new Score("David",5));
-        //scores.add(new Score("Koby",6));
-        //scores.add(new Score("Amit",9));
-        //scores.add(new Score("Test",1));
-        //scores.add(new Score("Moshe",11));
-        //scores.add(new Score("Test123",21));
-        //scores.add(new Score("Test",335));
-
+        //back button
+        Button backBtn =findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2nd = new Intent(SecondActivity.this,StartActivity.class);
+                startActivity(intent2nd);
+            }
+        });
+        //just in case score = 0
+        score = 0;
 
     }
 
