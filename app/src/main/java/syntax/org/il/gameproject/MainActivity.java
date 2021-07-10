@@ -450,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     break;
                 case R.id.finish_name_btn:
                     Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                    intent.putExtra("score",score);
                     startActivity(intent);
                     gameOver.dismiss();
                     break;

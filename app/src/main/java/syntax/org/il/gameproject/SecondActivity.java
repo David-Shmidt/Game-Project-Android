@@ -35,8 +35,8 @@ public class SecondActivity extends AppCompatActivity {
 
         database = openOrCreateDatabase("database.sql",MODE_PRIVATE,null);
         database.execSQL(CREATE_TABLE_CMD);
-
-
+        int score = getIntent().getIntExtra("score",0);
+        //int score = 0;
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -44,19 +44,15 @@ public class SecondActivity extends AppCompatActivity {
         ScoreAdapter scoreAdapter = new ScoreAdapter(scores);
         recyclerView.setAdapter(scoreAdapter);
         SharedPreferences sp = getSharedPreferences("details",MODE_PRIVATE);
-        Button finish_btn = findViewById(R.id.submit_btn);
-        finish_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = sp.getString("user_name",null);
-                int score = 5;
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("name",name);
-                contentValues.put("score",score);
-                database.insert(TABLE_NAME,null,contentValues);
-                scoreAdapter.notifyDataSetChanged();
-            }
-        });
+        if (score > 0) {
+            String name = sp.getString("user_name", null);
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("name", name);
+            contentValues.put("score", score);
+            database.insert(TABLE_NAME, null, contentValues);
+            scoreAdapter.notifyDataSetChanged();
+        }
 
         Cursor cursor = database.query(TABLE_NAME,null,null,null,null,null,null);
         int NameIndex = cursor.getColumnIndex("name");
