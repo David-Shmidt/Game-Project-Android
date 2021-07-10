@@ -41,10 +41,10 @@ public class SecondActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Score> scores = new ArrayList<>();
-        scores.add(new Score("David",5));
+        ScoreAdapter scoreAdapter = new ScoreAdapter(scores);
+        recyclerView.setAdapter(scoreAdapter);
         SharedPreferences sp = getSharedPreferences("details",MODE_PRIVATE);
-
-        Button finish_btn = findViewById(R.id.finish_name_btn);
+        Button finish_btn = findViewById(R.id.submit_btn);
         finish_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +54,7 @@ public class SecondActivity extends AppCompatActivity {
                 contentValues.put("name",name);
                 contentValues.put("score",score);
                 database.insert(TABLE_NAME,null,contentValues);
+                scoreAdapter.notifyDataSetChanged();
             }
         });
 
@@ -64,9 +65,9 @@ public class SecondActivity extends AppCompatActivity {
         {
             scores.add(new Score(cursor.getString(NameIndex),cursor.getInt(ScoreIndex)));
         }
-        ScoreAdapter scoreAdapter = new ScoreAdapter(scores);
+        scoreAdapter.notifyDataSetChanged();
         Collections.sort(scores);
-        recyclerView.setAdapter(scoreAdapter);
+
 
         //scores.add(new Score("David",5));
         //scores.add(new Score("Koby",6));

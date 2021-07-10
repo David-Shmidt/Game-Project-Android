@@ -17,6 +17,7 @@ public class GameView extends SurfaceView {
 
     float StartX ,startY , endX , endY;
     Paint paint;
+    Paint textPaint;
     Paint transperent = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint heartPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint heartPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -34,8 +35,12 @@ public class GameView extends SurfaceView {
     Brick deleteBr = new Brick(0,0,0,0 , 0);
     Ball ball;
     Brick platform;
-    Levels levels;
+    //Levels levels;
     int level = 0;
+    int score;
+
+
+
 
 
 
@@ -67,17 +72,23 @@ public class GameView extends SurfaceView {
         heartPaint3.setStyle(Paint.Style.FILL);
         stroke.setColor(Color.BLACK);
         stroke.setStyle(Paint.Style.STROKE);
+        stroke.setStrokeWidth(10);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(getResources().getColor(R.color.teal_200));
+        paint.setColor(getResources().getColor(R.color.purple_700));
         paint.setStyle(Paint.Style.FILL);
         transperent.setColor(Color.TRANSPARENT);
         transperent.setStyle(Paint.Style.FILL);
         bluePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bluePaint.setStyle(Paint.Style.FILL);
         bluePaint.setColor(Color.BLUE);
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setTextSize(20*scale);
+        textPaint.setColor(Color.BLACK);
+
 
         //Creating Levels instance
-        levels = new Levels(scale);
+        //levels = new Levels(scale);
 
         //Life
         heart.moveTo(25f* scale, 5f * scale);
@@ -88,6 +99,8 @@ public class GameView extends SurfaceView {
         heart.lineTo( 15f * scale, 10f * scale);
         heart.lineTo( 25f * scale, 5f * scale);
         heart.close();
+
+
 
 
 
@@ -146,6 +159,7 @@ public class GameView extends SurfaceView {
         canvas.drawPath(heart, stroke);
         canvas.drawPath(heart2, stroke);
         canvas.drawPath(heart3, stroke);
+        canvas.drawText("score: " + score ,160*scale , 25*scale , textPaint );
 
 
 
@@ -223,6 +237,20 @@ public class GameView extends SurfaceView {
         borderLeft.set(0, 0, 3 , screenY );
         borderTop.set(0, 0, screenX , 1 );
         borderBottom.set(0 , (screenY-1) , screenX , screenY );
+    }
+
+    void setLives(){
+        lostLives = 0;
+        heartPaint.setColor(Color.RED);
+        heartPaint2.setColor(Color.RED);
+        heartPaint3.setColor(Color.RED);
+        invalidate();
+    }
+
+    void setScore(int s){
+        score = s;
+        invalidate();
+
     }
 
 
