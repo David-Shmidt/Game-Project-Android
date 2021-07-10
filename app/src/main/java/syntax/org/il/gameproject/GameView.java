@@ -74,7 +74,7 @@ public class GameView extends SurfaceView {
         stroke.setStyle(Paint.Style.STROKE);
         stroke.setStrokeWidth(10);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(getResources().getColor(R.color.purple_700));
+        paint.setColor(getResources().getColor(R.color.teal_bright));
         paint.setStyle(Paint.Style.FILL);
         transperent.setColor(Color.TRANSPARENT);
         transperent.setStyle(Paint.Style.FILL);
