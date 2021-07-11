@@ -27,6 +27,7 @@ public class SecondActivity extends AppCompatActivity {
     final String CREATE_TABLE_CMD ="CREATE TABLE IF NOT EXISTS " + TABLE_NAME +"(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,score INTEGER);";
     SQLiteDatabase database;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
