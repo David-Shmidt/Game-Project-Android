@@ -18,7 +18,7 @@ public class Levels {
             heightChange += 30*scale;
             widthChange = 0;
             for (int j = 0; j < Colum; j++) {
-                bricks[index] = new Brick( (screenX/4 + widthChange),  (screenY/3 + heightChange),  (screenX/4 + 50*scale + widthChange),  (screenY/3 + 30*scale + heightChange),1);
+                bricks[index] = new Brick( (screenX/3 + widthChange),  (screenY/4 + heightChange),  (screenX/3 + 50*scale + widthChange),  (screenY/4 + 30*scale + heightChange),1);
                 //bricks[index].setRectF();
                 index++;
                 widthChange += 50*scale;
