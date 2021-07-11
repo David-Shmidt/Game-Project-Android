@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -22,6 +23,8 @@ import android.os.Handler;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     EditText nameEt;
     ImageButton pauseBtn;
     int score = 0;
+    boolean tutorial = false;
 
 
     boolean paused = false;
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         //sound effect in game
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_GAME)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -94,16 +98,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     .setMaxStreams(6)
                     .setAudioAttributes(audioAttributes)
                     .build();
-            }else {
-                soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC,0);
+        } else {
+            soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
         }
 
-        sound1 = soundPool.load(this,R.raw.brickhit,1);
-        sound2 = soundPool.load(this,R.raw.mphitplatform,1);
-        sound3 = soundPool.load(this,R.raw.mphitsidewall,1);
-        sound4 = soundPool.load(this,R.raw.mphitbottom,1);
-        sound5 = soundPool.load(this,R.raw.mpgameover,1);
-        sound6 = soundPool.load(this,R.raw.mplevelcomplete,1);
+        sound1 = soundPool.load(this, R.raw.brickhit, 1);
+        sound2 = soundPool.load(this, R.raw.mphitplatform, 1);
+        sound3 = soundPool.load(this, R.raw.mphitsidewall, 1);
+        sound4 = soundPool.load(this, R.raw.mphitbottom, 1);
+        sound5 = soundPool.load(this, R.raw.mpgameover, 1);
+        sound6 = soundPool.load(this, R.raw.mplevelcomplete, 1);
 
 
         scale = (int) getResources().getDisplayMetrics().density;
@@ -124,10 +128,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         levels = new Levels(scale);
         setLevel(0);
-        platform = gameView.createPlatform((screenX / 2), (screenY - 50 * scale), (screenX / 2 + 50 * scale), (screenY - 40 * scale));
+        platform = gameView.createPlatform((screenX / 2), (screenY - 90 * scale), (screenX / 2 + 50 * scale), (screenY - 80 * scale));
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
         gameView.setBorders(screenX, screenY);
-
 
 
         sensorManger = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -137,18 +140,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         pauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!paused){
+                if (!paused) {
                     pauseBtn.setImageResource(R.drawable.play_v);
                     paused = true;
-                }
-                else if(paused){
+                } else if (paused) {
                     pauseBtn.setImageResource(R.drawable.pause_v);
                     paused = false;
                 }
             }
         });
-    }
 
+
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -385,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angleY = (float)(Math.sin(angle));
     }
 
-    //Finishig Level Successfully and poping Dialog
+    //Finishing Level Successfully and poping Dialog
     void levelUp(){
 
         handler.post(new Runnable() {
@@ -407,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    //Dialog for when player loses the game
     void gameOver(){
         handler.post(new Runnable() {
             @Override
@@ -423,9 +427,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-
-       // bricks = levels.getLevel_1();
-        //gameView.createMatrix(bricks);
     }
 
 
@@ -494,8 +495,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 bricks = levels.getLevel_5();
                 gameView.createMatrix(bricks);
                 break;
+            case 6:
+                levels.setLevel_6();
+                bricks = levels.getLevel_6();
+                gameView.createMatrix(bricks);
+                break;
         }
-
     }
 
     void scoreControl(int n){
@@ -519,6 +524,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    void Tutorial() {
+    }
+
 
 }
 

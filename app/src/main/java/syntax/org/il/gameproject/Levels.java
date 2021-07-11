@@ -9,7 +9,7 @@ public class Levels {
     }
 
     public void setLevel_1() {
-        Row = 1;
+        Row = 2;
         Colum = 4;
         Brick[] bricks = new Brick[Row * Colum];
         for (int i = 0; i < Row; i++) {
@@ -28,7 +28,7 @@ public class Levels {
     }
 
     public void setLevel_2() {
-        Row = 2;
+        Row = 3;
         Colum = 4;
         Brick[] bricks = new Brick[Row * Colum];
         for (int i = 0; i < Row; i++) {
@@ -47,7 +47,7 @@ public class Levels {
     }
 
     public void setLevel_3() {
-        Row = 3;
+        Row = 4;
         Colum = 4;
         Brick[] bricks = new Brick[Row * Colum];
         for (int i = 0; i < Row; i++) {
@@ -103,6 +103,25 @@ public class Levels {
         index = 0;
     }
 
+    public void setLevel_6(){
+        Row = 7;
+        Colum = 6;
+        Brick[] bricks = new Brick[Row * Colum];
+        for (int i = 0; i < Row; i++) {
+            heightChange += 30;
+            widthChange = 0;
+            for (int j = 0; j < Colum; j++) {
+                bricks[index] = new Brick(scale * (80 + widthChange), scale * (60 + heightChange), scale * (130 + widthChange), scale * (90 + heightChange), 1);
+                //bricks[index].setRectF();
+                index++;
+                widthChange += 50;
+            }
+        }
+        heightChange = 0;
+        levels[5] = bricks;
+        index = 0;
+    }
+
 
 
     public Brick[] getLevel_1()
@@ -126,6 +145,10 @@ public class Levels {
 
     public Brick[] getLevel_5(){
         return levels[4];
+    }
+
+    public Brick[] getLevel_6(){
+        return levels[5];
     }
 
 
