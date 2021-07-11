@@ -116,17 +116,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angleY = (float) (Math.sin(angle / 18));
         speedX = 7 * scale;
         speedY = 7 * scale;
-        ballMovementX = speedX;
+        ballMovementX = 0;
         ballMovementY = speedY;
 
 
-        gameView = (GameView) findViewById(R.id.game_view);
+        gameView = findViewById(R.id.game_view);
         display = getWindowManager().getDefaultDisplay();
         display.getSize(size);
         screenX = size.x;
         screenY = size.y;
 
-        levels = new Levels(scale);
+        levels = new Levels(scale,screenX,screenY);
         setLevel(0);
         platform = gameView.createPlatform((screenX / 2), (screenY - 90 * scale), (screenX / 2 + 50 * scale), (screenY - 80 * scale));
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         }
 
-        if (platform.getRight() < 350 * scale && platMovementX < 0) {
+        if (platform.getRight() < screenX && platMovementX < 0) {
             gameView.movePlatform(platform, platMovementX);
             if (!startGame) {
                 gameView.moveCircle(gameBall, -platMovementX, 0);
