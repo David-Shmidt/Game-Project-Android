@@ -28,6 +28,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     //ImageView platform , ball;
@@ -417,11 +420,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void run() {
                 AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.game_over,null);
+                TextView scoreText = dialogView.findViewById(R.id.your_score);
+                TextView scoreInt = dialogView.findViewById(R.id.scoreInt);
+                scoreInt.setText(""+score);
                 Button finishBtn = dialogView.findViewById(R.id.finish_name_btn);
                 Button playagainBtn = dialogView.findViewById(R.id.play_again);
                 builder.setView(dialogView).setCancelable(false);
                 gameOver = builder.create();
                 gameOver.show();
+                
                 finishBtn.setOnClickListener(new AlertDialogsOnClickListener());
                 playagainBtn.setOnClickListener(new AlertDialogsOnClickListener());
             }
