@@ -1,5 +1,6 @@
 package syntax.org.il.gameproject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +31,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.view.Menu;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -81,9 +85,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean tutorial = false;
 
 
+
     boolean paused = false;
     private SoundPool soundPool;
     private int sound1,sound2,sound3,sound4,sound5,sound6;
+
+
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -154,6 +163,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
 
 
+    }
+
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_manue,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.swichSound:
+                Toast.makeText(this, "sound selected", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.lobbyMenu:
+                Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

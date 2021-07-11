@@ -11,9 +11,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,6 +81,7 @@ public class SecondActivity extends AppCompatActivity {
         score = 0;
 
     }
+
     //back press on phone go to start activity!!!
     @Override
     public void onBackPressed(){
@@ -85,6 +89,27 @@ public class SecondActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_manue,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.swichSound:
+                Toast.makeText(this, "sound selected", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.lobbyMenu:
+                Intent intent = new Intent(SecondActivity.this, StartActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

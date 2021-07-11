@@ -8,15 +8,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
@@ -89,6 +93,39 @@ public class StartActivity extends AppCompatActivity {
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
         objectAnimator.start(); //end of write for animation title
+    }
+
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_manue,menu);
+
+        MenuItem itemSwitch = menu.findItem(R.id.swichSound);
+        itemSwitch.setActionView(R.layout.switch_layout);
+        final Switch sw = (Switch)menu.findItem(R.id.swichSound).getActionView().findViewById(R.id.switchAB);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    mediaPlayer.pause();
+                }else{
+                    mediaPlayer.start();
+                }
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.lobbyMenu:
+                Intent intent = new Intent(StartActivity.this, StartActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
