@@ -38,6 +38,7 @@ public class GameView extends SurfaceView {
     //Levels levels;
     int level = 0;
     int score;
+    Display display;
 
 
 
@@ -62,6 +63,8 @@ public class GameView extends SurfaceView {
 
 
         super(context, attrs);
+
+
 
         //Paints
         heartPaint.setColor(Color.RED);
