@@ -7,4 +7,6 @@
     <string name="back_btn">חזרה</string>
     <string name="user_name">הכנס שם</string>
     <string name="usernameToast">שם משתמש:</string>
+    <string name="Fieldcantbeempty">השדה לא יכול להיות ריק</string>
+    <string name="start_game_exp">הקש על המסך כדי לשחק</string>
 </resources>

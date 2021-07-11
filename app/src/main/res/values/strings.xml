@@ -7,4 +7,5 @@
     <string name="usernameToast">user name:</string>
     <string name="Fieldcantbeempty">Field cant be empty</string>
     <string name="Usernametolong">User name to long</string>
+    <string name="start_game_exp">Touch the screen to start</string>
 </resources>
