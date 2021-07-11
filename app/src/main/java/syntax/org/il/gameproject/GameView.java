@@ -75,7 +75,7 @@ public class GameView extends SurfaceView {
         heartPaint3.setStyle(Paint.Style.FILL);
         stroke.setColor(Color.BLACK);
         stroke.setStyle(Paint.Style.STROKE);
-        stroke.setStrokeWidth(10);
+        stroke.setStrokeWidth(2*scale);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(getResources().getColor(R.color.teal_bright));
         paint.setStyle(Paint.Style.FILL);
@@ -86,8 +86,8 @@ public class GameView extends SurfaceView {
         bluePaint.setColor(Color.BLUE);
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setTextSize(20*scale);
-        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(30*scale);
+        textPaint.setColor(Color.WHITE);
 
 
         //Creating Levels instance
