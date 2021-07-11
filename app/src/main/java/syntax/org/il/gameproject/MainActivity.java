@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         levels = new Levels(scale,screenX,screenY);
         setLevel(0);
-        platform = gameView.createPlatform((screenX / 2), (screenY - 90 * scale), (screenX / 2 + 50 * scale), (screenY - 80 * scale));
+        platform = gameView.createPlatform((screenX / 2), (screenY - 110 * scale), (screenX / 2 + 50 * scale), (screenY - 100 * scale));
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
         gameView.setBorders(screenX, screenY);
 
