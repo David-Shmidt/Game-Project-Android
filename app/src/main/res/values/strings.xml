@@ -14,14 +14,12 @@
     <string name="game_over_txt">Game Over!</string>
     <string name="finish_btn">Finish</string>
     <string name="play_again_btn">play again</string>
-    <string name="diff_txt">Select Difficulty</string>
+    <string name="diff_txt">Difficulty</string>
     <string name="easy_btn">Easy</string>
     <string name="Medium_btn">Medium</string>
     <string name="hard_btn">Hard</string>
     <string name="MediaPermission">Media Permission</string>
     <string name="Musiconoff">Music on/off</string>
-    <string name="easy">easy</string>
-    <string name="medium">medium</string>
-    <string name="hard">hard</string>
     <string name="name">Name</string>
+    <string name="choosedifficulty">Choose Difficulty</string>
 </resources>

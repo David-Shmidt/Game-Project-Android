@@ -1,10 +1,5 @@
 package syntax.org.il.gameproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,14 +15,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.view.Menu;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -159,8 +158,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }
         });
-
-
     }
 
     //menu
@@ -301,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (bricks.length == bricksDestroyed) {
                     soundPool.play(sound6, 1, 1, 0, 0, 1);
                     paused = true;
+                    ballMovementX = 0;
                     levelUp();
                 }
 
@@ -481,6 +479,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     break;
                 case R.id.restart_level:
                     setLevel(0);
+                    ballMovementX=0;
                     lvlComplete.dismiss();
                     break;
                 case R.id.finish_name_btn:
@@ -490,6 +489,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     gameOver.dismiss();
                     break;
                 case R.id.play_again:
+                    ballMovementX = 0;
                     level = 0;
                     lives  = 3;
                     gameView.setScore(0);
