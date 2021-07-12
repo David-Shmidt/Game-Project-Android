@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int score = 0;
     //int diff =2 ;
     boolean paused = false;
-    int diff;
+    int diff = 1;
     private SoundPool soundPool;
     private int sound1,sound2,sound3,sound4,sound5,sound6;
 

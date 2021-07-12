@@ -38,7 +38,7 @@ public class StartActivity extends AppCompatActivity {
     ImageView Title;
     SharedPreferences sp;
     AlertDialog diffDialog;
-    int diff;
+    int diff = 0;
 
     String[] permissions = {"android.permission.WRITE_EXTERNAL_STORAGE"};
 
@@ -72,7 +72,11 @@ public class StartActivity extends AppCompatActivity {
                 } else if (username.length() > 20) {
                     textInputUsername.setError(getResources().getString(R.string.Usernametolong));
                     Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else if(diff==0){
+                    Toast.makeText(StartActivity.this,"Choose Difficulty" , Toast.LENGTH_LONG).show();
+                }
+                else {
                     textInputUsername.setError(null);
                     Intent intent = new Intent(StartActivity.this, MainActivity.class);
                     startActivity(intent);

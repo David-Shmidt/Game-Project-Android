@@ -18,7 +18,6 @@ import java.util.Locale;
 
 public class GameView extends View {
 
-    float StartX ,startY , endX , endY;
     Paint paint;
     Paint textPaint;
     Paint transperent = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -153,10 +152,10 @@ public class GameView extends View {
         // canvas.drawPath(heart , paint);
         //canvas.drawPath(heart,stroke);
 
-        canvas.drawRect(borderRight , paint);
-        canvas.drawRect(borderLeft , paint);
-        canvas.drawRect(borderTop , paint);
-        canvas.drawRect(borderBottom , paint);
+        canvas.drawRect(borderRight , transperent);
+        canvas.drawRect(borderLeft , transperent);
+        canvas.drawRect(borderTop , transperent);
+        canvas.drawRect(borderBottom , transperent);
 
         //drawing the hearts
 
@@ -166,7 +165,7 @@ public class GameView extends View {
         canvas.drawPath(heart, stroke);
         canvas.drawPath(heart2, stroke);
         canvas.drawPath(heart3, stroke);
-        canvas.drawText("score: " + score, 160 * scale, 25 * scale, textPaint);
+        canvas.drawText("score: " + score, 190 * scale, 25 * scale, textPaint);
 
 
 
