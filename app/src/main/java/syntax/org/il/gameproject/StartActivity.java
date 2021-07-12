@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.common.util.Strings;
+//import com.google.android.gms.common.util.Strings;
 import com.google.android.material.textfield.TextInputLayout;
 
 
@@ -85,6 +85,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chooseDiff(R.layout.difficulty_dialog);
+
 
             }
         });
