@@ -214,7 +214,8 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 diff = 1;
                 diffDialog.dismiss();
-                Toast.makeText(StartActivity.this,"easy", Toast.LENGTH_SHORT).show();
+                String easy = getResources().getString(R.string.easy_btn);
+                Toast.makeText(StartActivity.this,easy, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -223,7 +224,8 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 diff = 2;
                 diffDialog.dismiss();
-                Toast.makeText(StartActivity.this,"medium", Toast.LENGTH_SHORT).show();
+                String medium = getResources().getString(R.string.Medium_btn);
+                Toast.makeText(StartActivity.this,medium, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -232,7 +234,8 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 diff = 3;
                 diffDialog.dismiss();
-                Toast.makeText(StartActivity.this,"hard", Toast.LENGTH_SHORT).show();
+                String hard = getResources().getString(R.string.hard_btn);
+                Toast.makeText(StartActivity.this,hard, Toast.LENGTH_SHORT).show();
 
             }
         });
