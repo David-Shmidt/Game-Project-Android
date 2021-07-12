@@ -18,4 +18,5 @@
     <string name="easy_btn">Easy</string>
     <string name="Medium_btn">Medium</string>
     <string name="hard_btn">Hard</string>
+    <string name="location">location</string>
 </resources>
