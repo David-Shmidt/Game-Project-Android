@@ -19,6 +19,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,6 +33,8 @@ public class StartActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     ImageView Title;
     SharedPreferences sp;
+    AlertDialog diffDialog;
+    int diff;
 
 
 
@@ -66,6 +69,7 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
                 } else {
                     textInputUsername.setError(null);
+                    chooseDiff();
                     Intent intent = new Intent(StartActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -144,6 +148,7 @@ public class StartActivity extends AppCompatActivity {
         //
         editor.putString("user_name",textInputUsername.getEditText().getText().toString());
         editor.putInt("score",0);
+        editor.putInt("diff" , diff);
         editor.commit();
     }
 
@@ -161,4 +166,43 @@ public class StartActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    void chooseDiff(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this);
+        View diffView = getLayoutInflater().inflate(R.layout.difficulty_dialog , null);
+        builder.setView(diffView).setCancelable(false);
+        diffDialog = builder.create();
+
+        Button easyBtn = diffView.findViewById(R.id.easy_btn);
+        Button mediumBtn = diffView.findViewById(R.id.medium_btn);
+        Button hardBtn = diffView.findViewById(R.id.hard_btn);
+
+        easyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                diff = 1;
+                diffDialog.dismiss();
+            }
+        });
+
+        mediumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                diff = 2;
+                diffDialog.dismiss();
+            }
+        });
+
+        hardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                diff = 3;
+                diffDialog.dismiss();
+            }
+        });
+
+
+    }
+
+
 }
