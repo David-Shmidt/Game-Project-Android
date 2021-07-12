@@ -63,10 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int level = 1;
     ImageButton pauseBtn;
     int score = 0;
-    int diff;
-
-
-
+    //int diff =2 ;
     boolean paused = false;
     private SoundPool soundPool;
     private int sound1,sound2,sound3,sound4,sound5,sound6;
@@ -80,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*SharedPreferences sp = getSharedPreferences("details" , MODE_PRIVATE);
-        diff = sp.getInt("diff" , 1);*/
 
 
         //sound effect in game
@@ -112,18 +107,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angleY = (float) (Math.sin(angle / 18));
 
 
-        if(diff ==1){
-            speedX = 9 * scale;
-            speedY = 9 * scale;
-        }
-        else if(diff == 2) {
-            speedX = 9 * scale;
-            speedY = 9 * scale;
-        }
-        else if(diff ==3){
-            speedX = 11 * scale;
-            speedY = 11 * scale;
-        }
+        speedX = 10* scale;
+        speedY = 10 *scale;
+
         ballMovementX = 0;
         ballMovementY = speedY;
 
@@ -137,12 +123,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         levels = new Levels(scale,screenX,screenY);
         setLevel(0);
 
-            platform = gameView.createPlatform((screenX / 3), (screenY - 160 * scale), (screenX / 2), (screenY - 150 * scale));
+        platform = gameView.createPlatform((screenX / 3), (screenY - 160 * scale), (screenX / 2), (screenY - 150 * scale));
 
 
-        if(diff > 1) {
-            platform = gameView.createPlatform((screenX / 2), (screenY - 160 * scale), (screenX / 2 + 50 * scale), (screenY - 150 * scale));
-        }
+        //platform = gameView.createPlatform((screenX / 2), (screenY - 160 * scale), (screenX / 2 + 50 * scale), (screenY - 150 * scale));
+
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
         gameView.setBorders(screenX, screenY);
 
@@ -550,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void scoreControl(int n){
-        n *= lives * diff;
+        n *= lives;
         score += n;
         gameView.setScore(score);
     }
