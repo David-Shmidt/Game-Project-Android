@@ -74,7 +74,7 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
                 }
                 else if(diff==0){
-                    Toast.makeText(StartActivity.this,R.string.choosedifficulty , Toast.LENGTH_LONG).show();
+                    Toast.makeText(StartActivity.this,R.string.choosedifficulty+"" , Toast.LENGTH_LONG).show();
                 }
                 else {
                     textInputUsername.setError(null);
