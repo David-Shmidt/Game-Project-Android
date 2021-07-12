@@ -75,7 +75,7 @@ public class StartActivity extends AppCompatActivity {
                 }
                 else if(diff==0){
                     String difficultyToast = getResources().getString(R.string.choosedifficulty);
-                    Toast.makeText(StartActivity.this,difficultyToast , Toast.LENGTH_LONG).show();
+                    Toast.makeText(StartActivity.this, difficultyToast, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     textInputUsername.setError(null);
