@@ -59,8 +59,8 @@
 
     <Button
         android:id="@+id/play_btn"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_width="110dp"
+        android:layout_height="65dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="132dp"
         android:layout_marginEnd="32dp"
@@ -95,17 +95,18 @@
 
     <Button
         android:id="@+id/difficult"
-        android:layout_width="163dp"
-        android:layout_height="69dp"
+        android:layout_width="168dp"
+        android:layout_height="86dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_playbtn"
-        android:text="Difficult"
+        android:text="Difficulty"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/play_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"

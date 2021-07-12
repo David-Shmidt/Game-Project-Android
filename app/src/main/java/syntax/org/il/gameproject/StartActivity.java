@@ -30,8 +30,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class StartActivity extends AppCompatActivity {
 
-    //Play Button
+
     private Button playBtn;
+    private Button difficultBtn;
     private TextInputLayout textInputUsername;
     private MediaPlayer mediaPlayer;
     ImageView Title;
@@ -73,10 +74,18 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
                 } else {
                     textInputUsername.setError(null);
-                    chooseDiff();
                     Intent intent = new Intent(StartActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+
+        difficultBtn = findViewById(R.id.difficult);
+        difficultBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseDiff(R.layout.difficulty_dialog);
+
             }
         });
 
@@ -184,11 +193,12 @@ public class StartActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void chooseDiff(){
+    void chooseDiff(int difficulty_dialog){
         AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this);
         View diffView = getLayoutInflater().inflate(R.layout.difficulty_dialog , null);
         builder.setView(diffView).setCancelable(false);
         diffDialog = builder.create();
+        diffDialog.show();
 
         Button easyBtn = diffView.findViewById(R.id.easy_btn);
         Button mediumBtn = diffView.findViewById(R.id.medium_btn);
@@ -199,6 +209,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 diff = 1;
                 diffDialog.dismiss();
+
             }
         });
 

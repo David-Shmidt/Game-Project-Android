@@ -20,4 +20,7 @@
     <string name="hard_btn">Hard</string>
     <string name="MediaPermission">Media Permission</string>
     <string name="Musiconoff">Music on/off</string>
+    <string name="easy">easy</string>
+    <string name="medium">medium</string>
+    <string name="hard">hard</string>
 </resources>

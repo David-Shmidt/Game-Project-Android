@@ -3,31 +3,40 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/shape_dialog"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/diff_txt"
+        android:textColor="@color/purple"
         android:textSize="30sp"
         />
 
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/easy_btn"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/easy_btn"
-        android:id="@+id/easy_btn"/>
+        android:textColor="@color/white" />
 
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/medium_btn"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/Medium_btn"
-        android:id="@+id/medium_btn"/>
+        android:textColor="@color/white" />
 
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/hard_btn"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/hard_btn"
-        android:id="@+id/hard_btn"/>
+        android:textColor="@color/white" />
 
 </LinearLayout>
