@@ -24,4 +24,5 @@
     <string name="choosedifficulty">בחר רמת קושי</string>
     <string name="allow">מאשר</string>
     <string name="DENIED">דוחה</string>
+    <string name="Musiconoff">מוסיקה דלוק\כבוי</string>
 </resources>

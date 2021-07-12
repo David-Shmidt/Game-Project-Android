@@ -23,4 +23,5 @@
     <string name="choosedifficulty">Choose Difficulty</string>
     <string name="allow">ALLOW</string>
     <string name="DENIED">DENIED</string>
+    <string name="Musiconoff">Music ON/off</string>
 </resources>
