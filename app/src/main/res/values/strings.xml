@@ -19,4 +19,6 @@
     <string name="Medium_btn">Medium</string>
     <string name="hard_btn">Hard</string>
     <string name="location">location</string>
+    <string name="camera">camera</string>
+    <string name="MediaPermission">Media Permission</string>
 </resources>

@@ -5,8 +5,8 @@
         android:title="@string/lobby"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/location"
-        android:title="@string/location"
+    <item android:id="@+id/MediaPermission"
+        android:title="@string/MediaPermission"
         app:showAsAction="never"/>
 
     <item android:id="@+id/swichSound"
