@@ -10,4 +10,7 @@
     <string name="start_game_exp">Touch the screen to start</string>
     <string name="lobby">lobby</string>
     <string name="sound">sound</string>
+    <string name="location">location</string>
+    <string name="rationale_title">check</string>
+    <string name="rationale_message">cheeck2</string>
 </resources>

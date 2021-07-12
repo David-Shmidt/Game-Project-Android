@@ -5,9 +5,14 @@
         android:title="@string/lobby"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/location"
+        android:title="@string/location"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/swichSound"
         android:title=""
         app:showAsAction="always"
         android:actionLayout="@layout/switch_layout"/>
+
 
 </menu>
