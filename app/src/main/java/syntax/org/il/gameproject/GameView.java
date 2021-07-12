@@ -87,7 +87,7 @@ public class GameView extends View {
         transperent.setStyle(Paint.Style.FILL);
         bluePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bluePaint.setStyle(Paint.Style.FILL);
-        bluePaint.setColor(Color.BLUE);
+        bluePaint.setColor(getResources().getColor(R.color.bright_blue));
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setTextSize(30*scale);
