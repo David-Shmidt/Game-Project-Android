@@ -105,9 +105,9 @@ public class StartActivity extends AppCompatActivity {
 
         if(requestCode==80){
             if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"Download Code", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"ALLOW", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this,"Download Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"DENIED", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -116,20 +116,6 @@ public class StartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_manue,menu);
-
-        MenuItem itemSwitch = menu.findItem(R.id.swichSound);
-        itemSwitch.setActionView(R.layout.switch_layout);
-        final Switch sw = (Switch)menu.findItem(R.id.swichSound).getActionView().findViewById(R.id.switchAB);
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    mediaPlayer.pause();
-                }else{
-                    mediaPlayer.start();
-                }
-            }
-        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -144,6 +130,15 @@ public class StartActivity extends AppCompatActivity {
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                     requestPermissions(permissions,80);
                 }
+                return true;
+            case R.id.Musiconoff:
+               if(mediaPlayer.isPlaying()){
+                   mediaPlayer.pause();
+                   Toast.makeText(this,"Music off", Toast.LENGTH_SHORT).show();
+               }else {
+                   Toast.makeText(this, "Music on", Toast.LENGTH_SHORT).show();
+                   mediaPlayer.start();
+               }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

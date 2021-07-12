@@ -9,6 +9,10 @@
         android:title="@string/MediaPermission"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/Musiconoff"
+        android:title="@string/Musiconoff"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/swichSound"
         android:title=""
         app:showAsAction="always"

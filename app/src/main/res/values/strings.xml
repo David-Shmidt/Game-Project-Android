@@ -21,4 +21,5 @@
     <string name="location">location</string>
     <string name="camera">camera</string>
     <string name="MediaPermission">Media Permission</string>
+    <string name="Musiconoff">Music on/off</string>
 </resources>
