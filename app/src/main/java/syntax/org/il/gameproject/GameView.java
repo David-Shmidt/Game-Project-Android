@@ -41,7 +41,8 @@ public class GameView extends View {
     int level = 0;
     int score;
     Display display;
-    String language = Locale.getDefault().getLanguage() ;
+    String scoretxt = getResources().getString(R.string.score_txt);
+
 
 
 
@@ -165,7 +166,7 @@ public class GameView extends View {
         canvas.drawPath(heart, stroke);
         canvas.drawPath(heart2, stroke);
         canvas.drawPath(heart3, stroke);
-        canvas.drawText("score: " + score, 190 * scale, 25 * scale, textPaint);
+        canvas.drawText(scoretxt + score, 190 * scale, 25 * scale, textPaint);
 
 
 
