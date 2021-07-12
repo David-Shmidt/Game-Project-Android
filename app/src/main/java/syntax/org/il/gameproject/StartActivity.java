@@ -166,11 +166,11 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
-   /* @Override
+   @Override
     protected void onResume() {
         super.onResume();
         mediaPlayer.start();
-    }*/
+    }
 
     @Override
     protected void onPause() {
