@@ -17,4 +17,12 @@
     <string name="easy_btn">קל</string>
     <string name="Medium_btn">בינוני</string>
     <string name="hard_btn">קשה</string>
+    <string name="Usernametolong">שם משתמש ארוך מידי</string>
+    <string name="lobby">לובי</string>
+    <string name="sound">צליל</string>
+    <string name="Musiconoff">מוסיקה דלוק\\כבוי</string>
+    <string name="easy">קל</string>
+    <string name="medium">בינוני</string>
+    <string name="hard">קשה</string>
+    <string name="MediaPermission">אישור למדיה</string>
 </resources>
