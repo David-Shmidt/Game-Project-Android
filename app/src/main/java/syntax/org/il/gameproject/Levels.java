@@ -119,6 +119,24 @@ public class Levels {
         index = 0;
     }
 
+    public void setLevel_endless(){
+        Row = 8;
+        Colum = 6;
+        Brick[] bricks = new Brick[Row * Colum];
+        for (int i = 0; i < Row; i++) {
+            heightChange += 30*scale;
+            widthChange = 0;
+            for (int j = 0; j < Colum; j++) {
+                bricks[index] = new Brick( (screenX/3 + widthChange),  (screenY/4 + heightChange),  (screenX/3 + 50*scale + widthChange),  (screenY/4 + 30*scale + heightChange),1);
+                index++;
+                widthChange += 50*scale;
+            }
+        }
+        heightChange = 0;
+        levels[6] = bricks;
+        index = 0;
+    }
+
 
 
     public Brick[] getLevel_1()
@@ -145,6 +163,10 @@ public class Levels {
 
     public Brick[] getLevel_6(){
         return levels[5];
+    }
+
+    public Brick[] getLevel_7(){
+        return levels[6];
     }
 
 

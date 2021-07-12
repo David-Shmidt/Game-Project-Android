@@ -6,17 +6,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,28 +23,14 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.Menu;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    //ImageView platform , ball;
-    //View leftBorder,rightBorder, topBorder,bottomBorder;
-
-    //float newX ,speed = 1;
-    //float ballX , ballY,ballZ;
-
-    /*float scale = getResources().getDisplayMetrics().density;*/
-    /*Rect rightBorderRect = new Rect() , leftBorderRect = new Rect() , topBorderRect = new Rect(),bottomBorderRect = new Rect();
-    Rect ballRect = new Rect();
-    Rect platformRectR  =new Rect() , platformRectL = new Rect();*/
 
 
     //Defining all the Variables
@@ -57,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int scale;
     GameView gameView;
     Brick[] bricks;
-    Rect brick = new Rect();
-    int indexOfBrick = 0;
     Ball gameBall;
     Brick platform;
     float angleX;
@@ -79,10 +61,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int lives = 3;
     Levels levels;
     int level = 1;
-    EditText nameEt;
     ImageButton pauseBtn;
     int score = 0;
-    boolean tutorial = false;
+    int diff;
 
 
 
@@ -99,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*SharedPreferences sp = getSharedPreferences("details" , MODE_PRIVATE);
+        diff = sp.getInt("diff" , 1);*/
+
 
         //sound effect in game
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -126,8 +110,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         angle = (float) Math.PI;
         angleX = (float) (Math.cos(angle / 18));
         angleY = (float) (Math.sin(angle / 18));
-        speedX = 7 * scale;
-        speedY = 7 * scale;
+
+
+        if(diff ==1){
+            speedX = 9 * scale;
+            speedY = 9 * scale;
+        }
+        else if(diff == 2) {
+            speedX = 9 * scale;
+            speedY = 9 * scale;
+        }
+        else if(diff ==3){
+            speedX = 11 * scale;
+            speedY = 11 * scale;
+        }
         ballMovementX = 0;
         ballMovementY = speedY;
 
@@ -140,7 +136,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         levels = new Levels(scale,screenX,screenY);
         setLevel(0);
-        platform = gameView.createPlatform((screenX / 2), (screenY - 160 * scale), (screenX / 2 + 50 * scale), (screenY - 150 * scale));
+
+            platform = gameView.createPlatform((screenX / 3), (screenY - 160 * scale), (screenX / 2), (screenY - 150 * scale));
+
+
+        if(diff > 1) {
+            platform = gameView.createPlatform((screenX / 2), (screenY - 160 * scale), (screenX / 2 + 50 * scale), (screenY - 150 * scale));
+        }
         gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
         gameView.setBorders(screenX, screenY);
 
@@ -192,127 +194,128 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         if(!paused){
-        //Platform Movement
+            //Platform Movement
 
-        platMovementX = 5 * (int) (event.values[0] * scale);
-        if (platform.getLeft() > 0 && platMovementX > 0) {
-            gameView.movePlatform(platform, platMovementX);
-            if (!startGame) {
-                gameView.moveCircle(gameBall, -platMovementX, 0);
+            platMovementX = 5 * (int) (event.values[0] * scale);
+            if (platform.getLeft() > 0 && platMovementX > 0) {
+                gameView.movePlatform(platform, platMovementX);
+                if (!startGame) {
+                    gameView.moveCircle(gameBall, -platMovementX, 0);
+                }
+            }
+
+            if (platform.getRight() < screenX && platMovementX < 0) {
+                gameView.movePlatform(platform, platMovementX);
+                if (!startGame) {
+                    gameView.moveCircle(gameBall, -platMovementX, 0);
+                }
+            }
+
+
+            if (startGame) {
+                gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
+
+                //Ball Movement
+                //Hits left side
+                if (gameBall.getCenterX() < 0) {
+                    soundPool.play(sound3,1,1,0,0,1);
+                    right = true;
+                    if (up) {
+                        setAngles(1);
+                        ballMovementY = -1 * speedY * angleY;
+                    } else if (!up) {
+                        setAngles(3);
+                        ballMovementY = -1 * speedY * angleY;
+                    }
+                    ballMovementX = speedX * angleX;
+                }
+                //Hits top
+                if (gameBall.getCenterY() < 0) {
+                    soundPool.play(sound3,1,1,0,0,1);
+                    up = false;
+                    if (right) {
+                        setAngles(3);
+                    } else if (!right) {
+                        setAngles(4);
+                    }
+                    ballMovementX = speedX * angleX;
+                    ballMovementY = -1 * speedY * angleY;
+                }
+                //Hits right side
+                if (gameBall.getCenterX() > screenX) {
+                    soundPool.play(sound3,1,1,0,0,1);
+                    right = false;
+                    if (up) {
+                        setAngles(2);
+                        ballMovementY = -1 * speedY * angleY;
+                    } else if (!up) {
+                        setAngles(4);
+                        ballMovementY = -1 * speedY * angleY;
+                    }
+                    ballMovementX = speedX * angleX;
+                    if (ballMovementX > 0) {
+                        ballMovementX = -ballMovementX;
+                    }
+                }
+
+                //Hits Bottom and Loses life
+                if (gameBall.getCenterY() > screenY) {
+                    soundPool.play(sound4,1,1,0,0,1);
+                    lives--;
+                    gameView.loseLife();
+                    gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
+                    startGame = false;
+                    ballMovementX = 0;
+                    ballMovementY = -speedY;
+                    if(lives == 0){
+                        soundPool.play(sound5,1,1,0,0,1);
+                        gameOver();
+                    }
+                }
+
+                if (gameBall.hitsPlatform(platform) == 1) {
+                    soundPool.play(sound2,1,1,0,0,1);
+                    up = true;
+                    if (right) {
+                        setAngles(1);
+
+                    } else if (!right) {
+                        setAngles(2);
+                    }
+                    ballMovementX = speedX * angleX;
+                    ballMovementY = -1 * speedY * angleY;
+                }
+
+                //Checks if Ball intecects Bricks
+                for (Brick brick : bricks) {
+                    if (gameBall.hitsBrick(brick)) {
+                        soundPool.play(sound1,1,1,0,0,1);
+                        scoreControl(100);
+                        bricksDestroyed++;
+                        up = !up;
+                        right = !right;
+                        ballMovementX = -ballMovementX;
+                        ballMovementY = -ballMovementY;
+                        brick.set(0, 0, 0, 0, 0);
+                        //brick.setRectF();
+                        bricks = gameView.deleteBrick(bricks, brick);
+                        break;
+                        //index = 0;
+                    }
+                }
+                //If all Bricks are Destroyed pop Alert Dialog
+                //Also pause the game
+                if (bricks.length == bricksDestroyed) {
+                    soundPool.play(sound6, 1, 1, 0, 0, 1);
+                    paused = true;
+                    levelUp();
+                }
+
+
             }
         }
 
-        if (platform.getRight() < screenX && platMovementX < 0) {
-            gameView.movePlatform(platform, platMovementX);
-            if (!startGame) {
-                gameView.moveCircle(gameBall, -platMovementX, 0);
-            }
-        }
-
-
-        if (startGame) {
-            gameView.moveCircle(gameBall, ballMovementX, ballMovementY);
-
-            //Ball Movement
-            //Hits left side
-            if (gameBall.getCenterX() < 0) {
-                soundPool.play(sound3,1,1,0,0,1);
-                right = true;
-                if (up) {
-                    setAngles(1);
-                    ballMovementY = -1 * speedY * angleY;
-                } else if (!up) {
-                    setAngles(3);
-                    ballMovementY = -1 * speedY * angleY;
-                }
-                ballMovementX = speedX * angleX;
-            }
-            //Hits top
-            if (gameBall.getCenterY() < 0) {
-                soundPool.play(sound3,1,1,0,0,1);
-                up = false;
-                if (right) {
-                    setAngles(3);
-                } else if (!right) {
-                    setAngles(4);
-                }
-                ballMovementX = speedX * angleX;
-                ballMovementY = -1 * speedY * angleY;
-            }
-            //Hits right side
-            if (gameBall.getCenterX() > screenX) {
-                soundPool.play(sound3,1,1,0,0,1);
-                right = false;
-                if (up) {
-                    setAngles(2);
-                    ballMovementY = -1 * speedY * angleY;
-                } else if (!up) {
-                    setAngles(4);
-                    ballMovementY = -1 * speedY * angleY;
-                }
-                ballMovementX = speedX * angleX;
-                if (ballMovementX > 0) {
-                    ballMovementX = -ballMovementX;
-                }
-            }
-
-            //Hits Bottom and Loses life
-            if (gameBall.getCenterY() > screenY) {
-                soundPool.play(sound4,1,1,0,0,1);
-                lives--;
-                gameView.loseLife();
-                gameBall = gameView.createCircle(platform.getLeft() + (platform.getRight() - platform.getLeft()) / 2, platform.getTop() - 20 * scale, 4 * scale);
-                startGame = false;
-                ballMovementX = 0;
-                ballMovementY = -speedY;
-                if(lives == 0){
-                    soundPool.play(sound5,1,1,0,0,1);
-                    gameOver();
-                }
-            }
-
-            if (gameBall.hitsPlatform(platform) == 1) {
-                soundPool.play(sound2,1,1,0,0,1);
-                up = true;
-                if (right) {
-                    setAngles(1);
-
-                } else if (!right) {
-                    setAngles(2);
-                }
-                ballMovementX = speedX * angleX;
-                ballMovementY = -1 * speedY * angleY;
-            }
-
-            //Checks if Ball intecects Bricks
-            for (Brick brick : bricks) {
-                if (gameBall.hitsBrick(brick)) {
-                    soundPool.play(sound1,1,1,0,0,1);
-                    scoreControl(100);
-                    bricksDestroyed++;
-                    up = !up;
-                    right = !right;
-                    ballMovementX = -ballMovementX;
-                    ballMovementY = -ballMovementY;
-                    brick.set(0, 0, 0, 0, 0);
-                    //brick.setRectF();
-                    bricks = gameView.deleteBrick(bricks, brick);
-                    break;
-                    //index = 0;
-                }
-            }
-            //If all Bricks are Destroyed pop Alert Dialog
-            //Also pause the game
-            if (bricks.length == bricksDestroyed) {
-                soundPool.play(sound6,1,1,0,0,1);
-                paused = true;
-                levelUp();
-            }
-
-        }
     }
-
-}
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -459,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 builder.setView(dialogView).setCancelable(false);
                 gameOver = builder.create();
                 gameOver.show();
-                
+
                 finishBtn.setOnClickListener(new AlertDialogsOnClickListener());
                 playagainBtn.setOnClickListener(new AlertDialogsOnClickListener());
             }
@@ -538,11 +541,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 bricks = levels.getLevel_6();
                 gameView.createMatrix(bricks);
                 break;
+            case 7:
+                levels.setLevel_endless();
+                bricks = levels.getLevel_7();
+                gameView.createMatrix(bricks);
+                break;
         }
     }
 
     void scoreControl(int n){
-        n *= lives;
+        n *= lives * diff;
         score += n;
         gameView.setScore(score);
     }
@@ -563,8 +571,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         startActivity(intent);
     }
 
-    void Tutorial() {
-    }
 
 
 }

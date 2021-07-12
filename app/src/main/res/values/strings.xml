@@ -10,7 +10,12 @@
     <string name="start_game_exp">Touch the screen to start</string>
     <string name="lobby">lobby</string>
     <string name="sound">sound</string>
-    <string name="location">location</string>
-    <string name="rationale_title">check</string>
-    <string name="rationale_message">cheeck2</string>
+    <string name="score_txt">The Score:</string>
+    <string name="game_over_txt">Game Over!</string>
+    <string name="finish_btn">Finish</string>
+    <string name="play_again_btn">play again</string>
+    <string name="diff_txt">Select Difficulty</string>
+    <string name="easy_btn">Easy</string>
+    <string name="Medium_btn">Medium</string>
+    <string name="hard_btn">Hard</string>
 </resources>

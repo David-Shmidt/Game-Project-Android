@@ -23,6 +23,8 @@
         android:background="@drawable/backround_main_activity"
         android:src="@drawable/pause_v"
         android:id="@+id/pause_btn"/>
+
+
 </RelativeLayout>
 
 

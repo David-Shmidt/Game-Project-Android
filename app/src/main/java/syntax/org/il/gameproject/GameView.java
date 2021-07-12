@@ -10,10 +10,13 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
+import java.util.Locale;
 
-public class GameView extends SurfaceView {
+
+public class GameView extends View {
 
     float StartX ,startY , endX , endY;
     Paint paint;
@@ -39,6 +42,7 @@ public class GameView extends SurfaceView {
     int level = 0;
     int score;
     Display display;
+    String language = Locale.getDefault().getLanguage() ;
 
 
 
@@ -162,7 +166,8 @@ public class GameView extends SurfaceView {
         canvas.drawPath(heart, stroke);
         canvas.drawPath(heart2, stroke);
         canvas.drawPath(heart3, stroke);
-        canvas.drawText("score: " + score ,160*scale , 25*scale , textPaint );
+        canvas.drawText("score: " + score, 160 * scale, 25 * scale, textPaint);
+
 
 
 

@@ -1,16 +1,12 @@
 package syntax.org.il.gameproject;
 
-import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,23 +20,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import java.util.List;
-
-import static com.google.android.gms.common.ConnectionResult.RESOLUTION_REQUIRED;
 
 
 public class StartActivity extends AppCompatActivity {
@@ -51,7 +32,7 @@ public class StartActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     ImageView Title;
     SharedPreferences sp;
-     private int REQUEST_LOCATION = 1;
+
 
 
     @Override
@@ -63,9 +44,6 @@ public class StartActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(StartActivity.this,R.raw.backroundsound);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-
-        //run time permission
-        getLocation();
 
 
         //share preferences
@@ -116,32 +94,6 @@ public class StartActivity extends AppCompatActivity {
         objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
         objectAnimator.start(); //end of write for animation title
     }
-    //location permission
-    private void getLocation() {
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                Toast.makeText(StartActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(StartActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
-                        .show();
-            }
-        };
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setRationaleTitle(R.string.rationale_title)
-                .setRationaleMessage(R.string.rationale_message)
-                .setDeniedTitle("Permission denied")
-                .setDeniedMessage(
-                        "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setGotoSettingButtonText("SETTING")
-                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-                .check();
-    }
 
     //menu
     @Override
@@ -171,47 +123,9 @@ public class StartActivity extends AppCompatActivity {
                 Intent intent = new Intent(StartActivity.this, StartActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.location:
-                if(ActivityCompat.checkSelfPermission(StartActivity.this,Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-                    Location();
-                }else{
-                    ActivityCompat.requestPermissions(StartActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},23);
-                }
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void Location() {
-        LocationRequest request = LocationRequest.create();
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        request.setInterval(5000);
-        request.setFastestInterval(2000);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(request);
-        builder.setAlwaysShow(true);
-
-        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
-                .checkLocationSettings(builder.build());
-        result.addOnCompleteListener(task ->{
-            try{
-                LocationSettingsResponse response = task.getResult(ApiException.class);
-            }catch (ApiException e){
-                switch (e.getStatusCode())
-                {
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        try{
-                            ResolvableApiException resolvableApiException = (ResolvableApiException)e;
-                            resolvableApiException.startResolutionForResult(StartActivity.this,REQUEST_LOCATION);
-                        } catch (IntentSender.SendIntentException sendIntentException) {
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        break;
-                }
-            }
-        });
     }
 
     @Override

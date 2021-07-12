@@ -9,4 +9,12 @@
     <string name="usernameToast">שם משתמש:</string>
     <string name="Fieldcantbeempty">השדה לא יכול להיות ריק</string>
     <string name="start_game_exp">הקש על המסך כדי לשחק</string>
+    <string name="score_txt">הניקוד:</string>
+    <string name="game_over_txt">המשחק נגמר!</string>
+    <string name="finish_btn">סיום</string>
+    <string name="play_again_btn">שחק שוב</string>
+    <string name="diff_txt">דרגת קושי</string>
+    <string name="easy_btn">קל</string>
+    <string name="Medium_btn">בינוני</string>
+    <string name="hard_btn">קשה</string>
 </resources>
