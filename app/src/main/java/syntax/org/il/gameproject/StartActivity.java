@@ -6,7 +6,9 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.util.Strings;
 import com.google.android.material.textfield.TextInputLayout;
 
 
@@ -36,6 +39,7 @@ public class StartActivity extends AppCompatActivity {
     AlertDialog diffDialog;
     int diff;
 
+    String[] permissions = {"android.permission.WRITE_EXTERNAL_STORAGE"};
 
 
     @Override
@@ -98,6 +102,19 @@ public class StartActivity extends AppCompatActivity {
         objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
         objectAnimator.start(); //end of write for animation title
     }
+    //run permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull  String[] permissions, @NonNull  int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode==80){
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this,"Download Code", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this,"Download Cancel", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     //menu
     @Override
@@ -126,6 +143,11 @@ public class StartActivity extends AppCompatActivity {
             case R.id.lobbyMenu:
                 Intent intent = new Intent(StartActivity.this, StartActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.MediaPermission:
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                    requestPermissions(permissions,80);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
