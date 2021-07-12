@@ -543,7 +543,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void scoreControl(int n){
-        n *= lives;
+        n *= lives * diff;
         score += n;
         gameView.setScore(score);
     }
