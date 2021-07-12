@@ -18,8 +18,6 @@
     <string name="easy_btn">Easy</string>
     <string name="Medium_btn">Medium</string>
     <string name="hard_btn">Hard</string>
-    <string name="location">location</string>
-    <string name="camera">camera</string>
     <string name="MediaPermission">Media Permission</string>
     <string name="Musiconoff">Music on/off</string>
 </resources>

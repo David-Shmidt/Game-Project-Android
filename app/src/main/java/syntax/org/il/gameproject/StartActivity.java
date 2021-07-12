@@ -107,7 +107,7 @@ public class StartActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull  String[] permissions, @NonNull  int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode==80){
+        if(requestCode==1){
             if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this,"ALLOW", Toast.LENGTH_SHORT).show();
             }else{
@@ -132,7 +132,7 @@ public class StartActivity extends AppCompatActivity {
                 return true;
             case R.id.MediaPermission:
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                    requestPermissions(permissions,80);
+                    requestPermissions(permissions,1);
                 }
                 return true;
             case R.id.Musiconoff:
@@ -149,11 +149,11 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     protected void onResume() {
         super.onResume();
         mediaPlayer.start();
-    }
+    }*/
 
     @Override
     protected void onPause() {

@@ -100,9 +100,6 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.swichSound:
-                Toast.makeText(this, "sound selected", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.lobbyMenu:
                 Intent intent = new Intent(SecondActivity.this, StartActivity.class);
                 startActivity(intent);
