@@ -155,9 +155,7 @@ public class StartActivity extends AppCompatActivity {
             case R.id.Musiconoff:
                if(mediaPlayer.isPlaying()){
                    mediaPlayer.pause();
-                   Toast.makeText(this,"Music off", Toast.LENGTH_SHORT).show();
                }else {
-                   Toast.makeText(this, "Music on", Toast.LENGTH_SHORT).show();
                    mediaPlayer.start();
                }
                 return true;
