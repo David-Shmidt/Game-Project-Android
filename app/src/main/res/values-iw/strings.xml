@@ -23,4 +23,6 @@
     <string name="Musiconoff">מוסיקה דלוק\כבוי</string>
     <string name="MediaPermission">אישור למדיה</string>
     <string name="choosedifficulty">בחר\י רמת קושי</string>
+    <string name="allow">מאשר</string>
+    <string name="DENIED">דוחה</string>
 </resources>

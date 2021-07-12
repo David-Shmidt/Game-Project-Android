@@ -74,7 +74,8 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, input, Toast.LENGTH_SHORT).show();
                 }
                 else if(diff==0){
-                    Toast.makeText(StartActivity.this,R.string.choosedifficulty+"" , Toast.LENGTH_LONG).show();
+                    String difficultyToast = getResources().getString(R.string.choosedifficulty);
+                    Toast.makeText(StartActivity.this,difficultyToast , Toast.LENGTH_LONG).show();
                 }
                 else {
                     textInputUsername.setError(null);
@@ -123,9 +124,11 @@ public class StartActivity extends AppCompatActivity {
 
         if(requestCode==1){
             if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"ALLOW", Toast.LENGTH_SHORT).show();
+                String allowToast = getResources().getString(R.string.allow);
+                Toast.makeText(this,allowToast, Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this,"DENIED", Toast.LENGTH_SHORT).show();
+                String deniedToast = getResources().getString(R.string.DENIED);
+                Toast.makeText(this,deniedToast, Toast.LENGTH_SHORT).show();
             }
         }
     }
